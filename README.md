@@ -14,7 +14,7 @@ This is a simple Lost and Found System built using [your tech stack—e.g., Java
  - MySQL 
  - JDBC (Database Connection)
 
-**📚 Libraries **
+**📚 Libraries**
  - Swing-Jnafilechooser
  - JDatePicker
  - Swing-TimePicker
