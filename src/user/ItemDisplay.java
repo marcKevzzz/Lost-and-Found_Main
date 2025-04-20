@@ -4,17 +4,60 @@
  */
 package user;
 
-/**
- *
- * @author QCU
- */
-public class ItemDisplay extends javax.swing.JFrame {
+import admin.AdminPage;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.HeadlessException;
+import java.sql.DriverManager;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JViewport;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
+import jnafilechooser.api.JnaFileChooser;
+
+public final class ItemDisplay extends javax.swing.JFrame {
 
     /**
      * Creates new form ItemDisplay
      */
     public ItemDisplay() {
         initComponents();
+        displayItemCards();
     }
 
     /**
@@ -26,25 +69,238 @@ public class ItemDisplay extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        cardPanel = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 700));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(100, 100));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("<html><body style='margin-left: 10px;'><a href='#'> Report Item</a></body></html>");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
+
+        jLabel2.setText("<html><body><a href=''>Refresh</a></body></html>");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 700));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setFocusable(false);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        cardPanel.setBackground(new java.awt.Color(255, 255, 255));
+        cardPanel.setLayout(new java.awt.GridLayout(4, 4, 10, 10));
+        jScrollPane1.setViewportView(cardPanel);
+
+        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        new ItemReport().setVisible(true);
+        
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        displayItemCards();
+    }//GEN-LAST:event_jLabel2MouseClicked
+
+    public static void isLogin() {
+        if (user.Session.currentUsername == null) {
+            JOptionPane.showMessageDialog(null, "Please login first.");
+            new userAuth.Login().setVisible(true);
+        } else {
+            new AdminPage().setVisible(true);
+        }
+
+    }
+
+    public void displayItemCards() {
+        cardPanel.removeAll();
+        String query = "SELECT * FROM itemreport";
+        cardPanel.setLayout(new Table.wrapLayout(FlowLayout.LEFT, 15, 15));
+
+        cardPanel = new JPanel(cardPanel.getLayout()) {
+            @Override
+            public Dimension getPreferredSize() {
+                if (getParent() instanceof JViewport) {
+                    int width = ((JViewport) getParent()).getWidth();
+                    setSize(width, 0);
+                }
+                return super.getPreferredSize();
+            }
+        };
+
+        jScrollPane1.setViewportView(cardPanel);
+        jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
+
+        try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                JPanel card = createCard(rs);
+                cardPanel.add(card);
+            }
+
+            jScrollPane1.getViewport().addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    cardPanel.revalidate();
+                    cardPanel.repaint();
+                }
+            });
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
+        }
+    }
+
+    private JPanel createCard(ResultSet rs) throws Exception {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout()); // Allows scroll pane to fill the card
+        card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        card.setBackground(Color.WHITE);
+
+        // Image
+        JLabel imageLabel = new JLabel();
+        byte[] imgBytes = rs.getBytes("imageAttach");  // Replace with actual column name
+        if (imgBytes != null) {
+            Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
+            Image scaledImg = img.getScaledInstance(250, 200, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(scaledImg));
+        } else {
+            imageLabel.setText("No Image");
+        }
+
+        // Info Panel
+        JPanel info = new JPanel();
+        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
+        info.setBackground(Color.WHITE);
+        info.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+
+        Font font = new Font("Segoe UI Variable", Font.PLAIN, 14);
+
+        JLabel nameLabel = new JLabel("Name: " + rs.getString("itemName"));
+        nameLabel.setFont(font);
+        info.add(nameLabel);
+        info.add(Box.createRigidArea(new Dimension(0, 2)));
+
+        JLabel locationLabel = new JLabel("Location: " + rs.getString("location"));
+        locationLabel.setFont(font);
+        info.add(locationLabel);
+        info.add(Box.createRigidArea(new Dimension(0, 2)));
+
+        JLabel dateLabel = new JLabel("Date Lost: " + rs.getString("dateLost"));
+        dateLabel.setFont(font);
+        info.add(dateLabel);
+        info.add(Box.createRigidArea(new Dimension(0, 2)));
+
+        JLabel timeLabel = new JLabel("Time: " + rs.getString("timeLost"));
+        timeLabel.setFont(font);
+        info.add(timeLabel);
+        info.add(Box.createRigidArea(new Dimension(0, 2)));
+
+        String description = rs.getString("description");
+        JLabel descLbl = new JLabel("<html><body style='width: 130px'>Description: " + description + "</body></html>");
+        descLbl.setFont(font);
+        descLbl.setAlignmentX(LEFT_ALIGNMENT);
+        info.add(descLbl);
+
+        JButton claimBtn = new JButton("Claim This Item");
+        claimBtn.setOpaque(true);
+        claimBtn.setContentAreaFilled(false);
+        claimBtn.setBorder(new LineBorder(Color.black, 1));
+        claimBtn.setBorderPainted(true);
+
+        String itemName = rs.getString("itemName");
+
+        claimBtn.addActionListener(e -> {
+
+            JPanel lblpanel = new JPanel();
+            JLabel lbl = new JLabel("Other information provided on your profile");
+            lbl.setFont(font);
+            lblpanel.add(lbl);
+
+            // Fields
+            JTextField studentNumField = new JTextField(15);
+            JTextArea inquiryArea = new JTextArea(3, 15);
+            inquiryArea.setLineWrap(true);
+            inquiryArea.setWrapStyleWord(true);
+            JScrollPane inquiryScroll = new JScrollPane(inquiryArea);
+
+            // Main Panel
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            panel.add(lblpanel);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+            // Student Number Panel
+            JPanel studentPanel = new JPanel(new BorderLayout());
+            studentPanel.add(new JLabel("Student Number:"), BorderLayout.NORTH);
+            studentPanel.add(studentNumField, BorderLayout.CENTER);
+            studentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+            panel.add(studentPanel);
+            panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+            // Inquiry Panel
+            JPanel inquiryPanel = new JPanel(new BorderLayout());
+            inquiryPanel.add(new JLabel("Inquiry:"), BorderLayout.NORTH);
+            inquiryPanel.add(inquiryScroll, BorderLayout.CENTER);
+            panel.add(inquiryPanel);
+
+            int result = JOptionPane.showConfirmDialog(null, panel,
+                    "Claim Item: " + itemName, JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE);
+
+        });
+        info.add(Box.createRigidArea(new Dimension(0, 15)));
+        info.add(claimBtn);
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(Color.white);
+        contentPanel.add(imageLabel);
+        contentPanel.add(Box.createVerticalStrut(5));
+        contentPanel.add(info);
+
+        JScrollPane scrollPane = new JScrollPane(
+                contentPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+        );
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+        scrollPane.setPreferredSize(new Dimension(250, 400));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+
+        card.add(scrollPane);
+        return card;
+    }
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -75,8 +331,16 @@ public class ItemDisplay extends javax.swing.JFrame {
                 new ItemDisplay().setVisible(true);
             }
         });
+        isLogin();
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel cardPanel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

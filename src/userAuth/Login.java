@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package userAuth;
+
 import admin.AdminPage;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +15,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import user.ItemDisplay;
-
 
 /**
  *
@@ -40,18 +40,25 @@ public class Login extends javax.swing.JFrame {
 
         jOptionPane1 = new javax.swing.JOptionPane();
         jPanel1 = new javax.swing.JPanel();
-        Login = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
         passwordTxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         studentNumTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
+        Login = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(480, 380));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
-        jPanel1.setLayout(null);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel3.setText("Password");
+
+        jLabel4.setText("Student Number");
 
         Login.setText("LOGIN");
         Login.addActionListener(new java.awt.event.ActionListener() {
@@ -59,20 +66,6 @@ public class Login extends javax.swing.JFrame {
                 LoginActionPerformed(evt);
             }
         });
-        jPanel1.add(Login);
-        Login.setBounds(330, 260, 100, 38);
-        jPanel1.add(passwordTxt);
-        passwordTxt.setBounds(50, 170, 380, 35);
-
-        jLabel3.setText("Password");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(50, 140, 50, 16);
-        jPanel1.add(studentNumTxt);
-        studentNumTxt.setBounds(50, 80, 380, 35);
-
-        jLabel4.setText("Student Number");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(50, 50, 110, 16);
 
         jLabel1.setText("<html>Don't have an account? <a href='#'>SignUp</a></html>");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -81,8 +74,60 @@ public class Login extends javax.swing.JFrame {
                 jLabel1MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(250, 230, 180, 16);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGap(80, 80, 80)
+                            .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(studentNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(passwordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(jLabel4)
+                .addGap(14, 14, 14)
+                .addComponent(studentNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel3)
+                .addGap(14, 14, 14)
+                .addComponent(passwordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(Login, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(177, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(307, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(14, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,41 +146,35 @@ public class Login extends javax.swing.JFrame {
 
     private void LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginActionPerformed
 
-        String sUrl, sUser, sPass;
-        sUrl = "jdbc:MySQL://localhost:3306/lostandfound_db"; 
-        sUser = "root";
-        sPass = "";
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection(sUrl, sUser, sPass); // Connecting to database
+        try (Connection conn = DBConnection.DataBase.getConnection()) { // Connecting to database
 
             String studentNumber = studentNumTxt.getText().trim();
             String password = passwordTxt.getText().trim();
-            
+
             if (studentNumber.isEmpty()) {
                 jOptionPane1.showMessageDialog(this, "Student Number is required", "Error", jOptionPane1.ERROR_MESSAGE);
                 return;
             }
-            if (studentNumber.length() != 7) {
+            if (!studentNumber.matches("^\\d{2}-\\d{4}$")) {
                 jOptionPane1.showMessageDialog(this, "Incorrect Student Number eg.(24-XXXX)", "Error", jOptionPane1.ERROR_MESSAGE);
                 return;
             }
             if (password.isEmpty()) {
                 jOptionPane1.showMessageDialog(this, "Password is required", "Error", jOptionPane1.ERROR_MESSAGE);
-                return;
+                return; 
             }
-            
+
             // Query 1: Check if student number exists
             String queryUserExists = "SELECT * FROM users_tbl WHERE schoolID = ?"; //queries
-            PreparedStatement pstmtUser = con.prepareStatement(queryUserExists); 
+            PreparedStatement pstmtUser = conn.prepareStatement(queryUserExists);
             pstmtUser.setString(1, studentNumber);
             ResultSet rsUser = pstmtUser.executeQuery();
 
             if (rsUser.next()) {
                 // Query 2: Matching schooldId and password
                 String queryLogin = "SELECT * FROM users_tbl WHERE schoolID = ? AND password = ?";
-                PreparedStatement pstmtLogin = con.prepareStatement(queryLogin);
+                PreparedStatement pstmtLogin = conn.prepareStatement(queryLogin);
                 pstmtLogin.setString(1, studentNumber);
                 pstmtLogin.setString(2, password);
                 ResultSet rsLogin = pstmtLogin.executeQuery();
@@ -143,6 +182,12 @@ public class Login extends javax.swing.JFrame {
                 if (rsLogin.next()) {
                     // Login successful
                     jOptionPane1.showMessageDialog(this, "Login Successful!");
+
+                    String username = rsUser.getString("fullName");
+
+                    // Save session info
+                    user.Session.currentUsername = username;
+                    user.Session.userSchoolId = studentNumber;
 
                     if (studentNumber.equals("00-0000") && password.equals("admin123")) {
                         this.dispose();
@@ -161,7 +206,7 @@ public class Login extends javax.swing.JFrame {
                 // Student number not found
                 jOptionPane1.showMessageDialog(this, "Student Number not found", "Error", jOptionPane1.ERROR_MESSAGE);
             }
-            
+
         } catch (Exception e) {
             jOptionPane1.showMessageDialog(null, e.getMessage(), "Database Error", jOptionPane1.ERROR_MESSAGE);
         }
@@ -169,9 +214,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-       SignUp signUp = new SignUp();
+        SignUp signUp = new SignUp();
         signUp.setVisible(true);
-  
+
         this.dispose();
     }//GEN-LAST:event_jLabel1MouseClicked
 
@@ -218,6 +263,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField passwordTxt;
     private javax.swing.JTextField studentNumTxt;
     // End of variables declaration//GEN-END:variables
