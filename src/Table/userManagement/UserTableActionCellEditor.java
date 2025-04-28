@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Table;
+package Table.userManagement;
 
-import java.awt.Color;
+import Table.CellPanelAction;
+import Table.TableActionEvent;
 import java.awt.Component;
 import java.util.function.Supplier;
 import javax.swing.DefaultCellEditor;
@@ -15,12 +16,11 @@ import javax.swing.JTable;
  *
  * @author QCU
  */
-public class TableActionCellEditor extends DefaultCellEditor {
-    
-    private final TableActionEvent event;
+public class UserTableActionCellEditor extends DefaultCellEditor {
+     private final UserTableActionEvent event;
     private final Supplier<Integer> editableRowSupplier;
     
-    public TableActionCellEditor(TableActionEvent event, Supplier<Integer> editableRowSupplier) {
+    public UserTableActionCellEditor(UserTableActionEvent event, Supplier<Integer> editableRowSupplier) {
         super(new JCheckBox());
         this.event = event;
         this.editableRowSupplier = editableRowSupplier;
@@ -28,7 +28,7 @@ public class TableActionCellEditor extends DefaultCellEditor {
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        CellPanelAction action = new CellPanelAction();
+        UserCellPanelAction action = new UserCellPanelAction();
         action.initEvent(event, row);
         action.setEditModeIcon(row == editableRowSupplier.get());
         action.setBackground(table.getSelectionBackground());

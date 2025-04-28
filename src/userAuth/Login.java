@@ -153,20 +153,20 @@ public class Login extends javax.swing.JFrame {
             String password = passwordTxt.getText().trim();
 
             if (studentNumber.isEmpty()) {
-                jOptionPane1.showMessageDialog(this, "Student Number is required", "Error", jOptionPane1.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Student Number is required", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (!studentNumber.matches("^\\d{2}-\\d{4}$")) {
-                jOptionPane1.showMessageDialog(this, "Incorrect Student Number eg.(24-XXXX)", "Error", jOptionPane1.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Incorrect Student Number eg.(24-XXXX)", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
             if (password.isEmpty()) {
-                jOptionPane1.showMessageDialog(this, "Password is required", "Error", jOptionPane1.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Password is required", "Error", JOptionPane.ERROR_MESSAGE);
                 return; 
             }
 
             // Query 1: Check if student number exists
-            String queryUserExists = "SELECT * FROM users_tbl WHERE schoolID = ?"; //queries
+            String queryUserExists = "SELECT * FROM users_tbl WHERE schoolID = ?"; 
             PreparedStatement pstmtUser = conn.prepareStatement(queryUserExists);
             pstmtUser.setString(1, studentNumber);
             ResultSet rsUser = pstmtUser.executeQuery();
@@ -181,13 +181,15 @@ public class Login extends javax.swing.JFrame {
 
                 if (rsLogin.next()) {
                     // Login successful
-                    jOptionPane1.showMessageDialog(this, "Login Successful!");
+                    JOptionPane.showMessageDialog(this, "Login Successful!");
 
-                    String username = rsUser.getString("fullName");
+                    String firstName = rsUser.getString("firstName");
+                    String lastName = rsUser.getString("lastName");
 
                     // Save session info
-                    user.Session.currentUsername = username;
+                    user.Session.currentUsername = firstName + " " + lastName;
                     user.Session.userSchoolId = studentNumber;
+                    user.Session.userId = rsLogin.getInt("id");
 
                     if (studentNumber.equals("00-0000") && password.equals("admin123")) {
                         this.dispose();
@@ -199,16 +201,16 @@ public class Login extends javax.swing.JFrame {
 
                 } else {
                     // Password is incorrect
-                    jOptionPane1.showMessageDialog(this, "Incorrect Password", "Error", jOptionPane1.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Incorrect Password", "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
             } else {
                 // Student number not found
-                jOptionPane1.showMessageDialog(this, "Student Number not found", "Error", jOptionPane1.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Student Number not found", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
         } catch (Exception e) {
-            jOptionPane1.showMessageDialog(null, e.getMessage(), "Database Error", jOptionPane1.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_LoginActionPerformed

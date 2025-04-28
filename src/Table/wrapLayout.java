@@ -1,90 +1,111 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Table;
-
 import java.awt.*;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
-public class wrapLayout extends FlowLayout {
-    public wrapLayout() {
-        super();
-    }
+public class wrapLayout extends FlowLayout
+{
+  private Dimension preferredLayoutSize;
 
-    public wrapLayout(int align) {
-        super(align);
-    }
+	public wrapLayout()
+	{
+		super();
+	}
 
-    public wrapLayout(int align, int hgap, int vgap) {
-        super(align, hgap, vgap);
-    }
+	public wrapLayout(int align)
+	{
+		super(align);
+	}
 
-    @Override
-    public Dimension preferredLayoutSize(Container target) {
-        return layoutSize(target, true);
-    }
+	public wrapLayout(int align, int hgap, int vgap)
+	{
+		super(align, hgap, vgap);
+	}
 
-    @Override
-    public Dimension minimumLayoutSize(Container target) {
-        Dimension minimum = layoutSize(target, false);
-        minimum.width -= (getHgap() + 1);
-        return minimum;
-    }
+	@Override
+	public Dimension preferredLayoutSize(Container target)
+	{
+		return layoutSize(target, true);
+	}
 
-    private Dimension layoutSize(Container target, boolean preferred) {
-        synchronized (target.getTreeLock()) {
-            int targetWidth = target.getWidth();
+	@Override
+	public Dimension minimumLayoutSize(Container target)
+	{
+		Dimension minimum = layoutSize(target, false);
+		minimum.width -= (getHgap() + 1);
+		return minimum;
+	}
 
-            if (targetWidth == 0) {
-                targetWidth = Integer.MAX_VALUE;
-            }
+	private Dimension layoutSize(Container target, boolean preferred)
+	{
+	synchronized (target.getTreeLock())
+	{
+		int targetWidth = target.getSize().width;
 
-            Insets insets = target.getInsets();
-            int maxWidth = targetWidth - (insets.left + insets.right + getHgap() * 2);
+		if (targetWidth == 0)
+			targetWidth = Integer.MAX_VALUE;
 
-            Dimension dim = new Dimension(0, 0);
-            int rowWidth = 0;
-            int rowHeight = 0;
+		int hgap = getHgap();
+		int vgap = getVgap();
+		Insets insets = target.getInsets();
+		int horizontalInsetsAndGap = insets.left + insets.right + (hgap * 2);
+		int maxWidth = targetWidth - horizontalInsetsAndGap;
 
-            int nmembers = target.getComponentCount();
+		Dimension dim = new Dimension(0, 0);
+		int rowWidth = 0;
+		int rowHeight = 0;
 
-            for (int i = 0; i < nmembers; i++) {
-                Component m = target.getComponent(i);
+		int nmembers = target.getComponentCount();
 
-                if (m.isVisible()) {
-                    Dimension d = preferred ? m.getPreferredSize() : m.getMinimumSize();
+		for (int i = 0; i < nmembers; i++)
+		{
+			Component m = target.getComponent(i);
 
-                    if ((rowWidth + d.width) > maxWidth) {
-                        addRow(dim, rowWidth, rowHeight);
-                        rowWidth = 0;
-                        rowHeight = 0;
-                    }
+			if (m.isVisible())
+			{
+				Dimension d = preferred ? m.getPreferredSize() : m.getMinimumSize();
 
-                    if (rowWidth != 0) {
-                        rowWidth += getHgap();
-                    }
+				if (rowWidth + d.width > maxWidth)
+				{
+					addRow(dim, rowWidth, rowHeight);
+					rowWidth = 0;
+					rowHeight = 0;
+				}
 
-                    rowWidth += d.width;
-                    rowHeight = Math.max(rowHeight, d.height);
-                }
-            }
+				if (rowWidth != 0)
+				{
+					rowWidth += hgap;
+				}
 
-            addRow(dim, rowWidth, rowHeight);
+				rowWidth += d.width;
+				rowHeight = Math.max(rowHeight, d.height);
+			}
+		}
 
-            dim.width += insets.left + insets.right + getHgap() * 2;
-            dim.height += insets.top + insets.bottom + getVgap() * 2;
+		addRow(dim, rowWidth, rowHeight);
 
-            return dim;
-        }
-    }
+		dim.width += horizontalInsetsAndGap;
+		dim.height += insets.top + insets.bottom + vgap * 2;
 
-    private void addRow(Dimension dim, int rowWidth, int rowHeight) {
-        dim.width = Math.max(dim.width, rowWidth);
+		Container scrollPane = SwingUtilities.getAncestorOfClass(JScrollPane.class, target);
+		if (scrollPane != null)
+		{
+			dim.width -= (hgap + 1);
+		}
 
-        if (dim.height > 0) {
-            dim.height += getVgap();
-        }
+		return dim;
+	}
+	}
 
-        dim.height += rowHeight;
-    }
+	private void addRow(Dimension dim, int rowWidth, int rowHeight)
+	{
+		dim.width = Math.max(dim.width, rowWidth);
+
+		if (dim.height > 0)
+		{
+			dim.height += getVgap();
+		}
+
+		dim.height += rowHeight;
+	}
 }

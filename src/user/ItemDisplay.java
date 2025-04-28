@@ -7,9 +7,12 @@ package user;
 import admin.AdminPage;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -19,16 +22,27 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.Instant;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +52,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,9 +61,14 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import jnafilechooser.api.JnaFileChooser;
+import user.ClaimItem;
+import user.PendingReportItem;
+import user.Profile;
+import user.Session;
 
 public final class ItemDisplay extends javax.swing.JFrame {
 
@@ -58,7 +78,24 @@ public final class ItemDisplay extends javax.swing.JFrame {
     public ItemDisplay() {
         initComponents();
         displayItemCards();
+        if (!jDialog1.isVisible()) {
+            image[0] = null;
+            fileName.setText("No file choosen");
+        }
+        r.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                // 🔁 Refresh your table or panel here
+                displayItemCards(); // or your refresh method
+
+            }
+        });
     }
+    final byte[][] image = new byte[1][];
+    StringBuilder errors = new StringBuilder();
+    user.ItemReport r = new user.ItemReport();
+    int itemId;
+    int userId ;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,15 +106,235 @@ public final class ItemDisplay extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        studentNumField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        inquiryArea = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        fileLabel = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+        fileName = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cardPanel = new javax.swing.JPanel();
 
+        jDialog1.setResizable(false);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setMinimumSize(new java.awt.Dimension(390, 500));
+        jPanel3.setPreferredSize(new java.awt.Dimension(390, 500));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
+        jLabel2.setText("Other Information Provided In Your Profile");
+
+        studentNumField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentNumFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
+        jLabel3.setText("Student Number:");
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
+        jLabel4.setText("Inquiry:");
+
+        inquiryArea.setColumns(20);
+        inquiryArea.setRows(5);
+        jScrollPane2.setViewportView(inquiryArea);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
+        jLabel5.setText("Provide proof/ receipt:");
+
+        fileLabel.setBackground(new java.awt.Color(255, 255, 255));
+        fileLabel.setFont(new java.awt.Font("Segoe UI Variable", 0, 12)); // NOI18N
+        fileLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fileLabel.setText("Upload Photo");
+        fileLabel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        fileLabel.setMaximumSize(new java.awt.Dimension(150, 130));
+        fileLabel.setMinimumSize(new java.awt.Dimension(150, 130));
+        fileLabel.setPreferredSize(new java.awt.Dimension(150, 130));
+        fileLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileLabelMouseClicked(evt);
+            }
+        });
+
+        jButton3.setBackground(new java.awt.Color(102, 255, 102));
+        jButton3.setText("Submit");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        fileName.setText("No file choosen");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(studentNumField)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(fileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fileName)))
+                .addGap(0, 32, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(studentNumField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(fileName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
+        );
+
+        jDialog1.getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 700));
+        setMinimumSize(new java.awt.Dimension(800, 400));
+        setPreferredSize(new java.awt.Dimension(1300, 700));
+        setSize(new java.awt.Dimension(1300, 700));
+
+        jPanel1.setBackground(new java.awt.Color(234, 234, 234));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1300, 700));
+
+        jPanel6.setBackground(new java.awt.Color(0, 0, 204));
+        jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
+        jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
+
+        jPanel7.setOpaque(false);
+        jPanel7.setPreferredSize(new java.awt.Dimension(70, 60));
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("QCU");
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(22, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addContainerGap())
+        );
+
+        jPanel8.setBackground(new java.awt.Color(0, 51, 255));
+        jPanel8.setMinimumSize(new java.awt.Dimension(32, 20));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jLabel7.setBackground(new java.awt.Color(51, 51, 255));
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Found Item ");
+        jPanel8.add(jLabel7, java.awt.BorderLayout.CENTER);
+
+        jLabel8.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("Claim Item");
+        jLabel8.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+
+        jLabel9.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("Pending Report");
+        jLabel9.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
+
+        jLabel10.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("Profile");
+        jLabel10.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(420, Short.MAX_VALUE))
+        );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(100, 100));
@@ -92,44 +349,176 @@ public final class ItemDisplay extends javax.swing.JFrame {
         });
         jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("<html><body><a href=''>Refresh</a></body></html>");
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-        });
-        jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_START);
-
-        getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
-
-        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 700));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setFocusable(false);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(800, 600));
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(50, 50));
+        jScrollPane1.setOpaque(false);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 100));
 
-        cardPanel.setBackground(new java.awt.Color(255, 255, 255));
-        cardPanel.setLayout(new java.awt.GridLayout(4, 4, 10, 10));
+        cardPanel.setBackground(new java.awt.Color(234, 234, 234));
+        cardPanel.setMinimumSize(new java.awt.Dimension(100, 100));
+        cardPanel.setOpaque(false);
+        cardPanel.setPreferredSize(new java.awt.Dimension(100, 100));
+
+        javax.swing.GroupLayout cardPanelLayout = new javax.swing.GroupLayout(cardPanel);
+        cardPanel.setLayout(cardPanelLayout);
+        cardPanelLayout.setHorizontalGroup(
+            cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1212, Short.MAX_VALUE)
+        );
+        cardPanelLayout.setVerticalGroup(
+            cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 594, Short.MAX_VALUE)
+        );
+
         jScrollPane1.setViewportView(cardPanel);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
+        getAccessibleContext().setAccessibleName("frame3");
+
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        new ItemReport().setVisible(true);
-        
+        ItemDisplay display = new ItemDisplay();
+        if (!display.checkUserLogin(this)) {
+            return;
+        }
+        r.setVisible(true);
+        r.setDefaultCloseOperation(user.ItemReport.DISPOSE_ON_CLOSE); // ✅ Only closes this window
+
     }//GEN-LAST:event_jLabel1MouseClicked
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        displayItemCards();
-    }//GEN-LAST:event_jLabel2MouseClicked
+    private void studentNumFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentNumFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentNumFieldActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (studentNumField.getText().trim().isEmpty()) {
+            errors.append("- Student Number is required\n");
+        } else if (!studentNumField.getText().matches("^\\d{2}-\\d{4}$")) {
+            errors.append("- Incorrect Student Number (format: 12-3456)\n");
+        }
+
+        if (inquiryArea.getText().trim().isEmpty()) {
+            errors.append("- Inquiry is required\n");
+        }
+
+        if (errors.length() > 0) {
+            JOptionPane.showMessageDialog(null, errors.toString(), "Validation Errors", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try (Connection conn = DBConnection.DataBase.getConnection()) {
+                String getUserQuery = "SELECT * FROM users_tbl WHERE schoolID = ?";
+                PreparedStatement pstUser = conn.prepareStatement(getUserQuery);
+                pstUser.setString(1, studentNumField.getText());
+                ResultSet rst = pstUser.executeQuery();
+
+                if (rst.next()) {
+                    String firstName = rst.getString("firstName") + " " + rst.getString("lastName");
+                    String lastName = rst.getString("lastName");
+                    String yearSec = rst.getString("yearSec");
+                    String studentNumber = rst.getString("schoolID");
+                    String email = rst.getString("email");
+                    String phone = rst.getString("phone");
+
+                    if (studentNumber.equals(studentNumField.getText())) {
+
+                        String insertQuery = "INSERT INTO claims_tbl (fullName, yearSec, studentNumber, email, phone, inquiry, proofImage, claimId, status_claim, userId, whoClaim) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
+                        pstInsert.setString(1, firstName + " " + lastName);
+                        pstInsert.setString(2, yearSec);
+                        pstInsert.setString(3, studentNumber);
+                        pstInsert.setString(4, email);
+                        pstInsert.setString(5, phone);
+                        pstInsert.setString(6, inquiryArea.getText());
+                        pstInsert.setBytes(7, image[0]);
+                        pstInsert.setInt(8, itemId);
+                        pstInsert.setString(9, "Claim Pending");
+                        pstInsert.setInt(10, userId);
+                        pstInsert.setInt(11, rst.getInt("id"));
+                        pstInsert.executeUpdate();
+                        
+                        String insertQuerys = "UPDATE itemreport SET status=? WHERE id=? AND status='Posted'";
+                        PreparedStatement pstInserts = conn.prepareStatement(insertQuerys);
+                        pstInserts.setString(1, "Claim Pending");
+                        pstInserts.setInt(2, itemId);
+                        pstInserts.executeUpdate();
+                        
+                        System.out.println(itemId);
+
+                        JOptionPane.showMessageDialog(null, "Claim submitted successfully.");
+                        jDialog1.dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Student Number does not match.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "User information not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void fileLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileLabelMouseClicked
+        JnaFileChooser ch = new JnaFileChooser();
+        ch.setMode(JnaFileChooser.Mode.Files);
+        ch.addFilter("Image Files", "jpg", "jpeg", "png", "gif", "bmp", "jfif", "webp");
+
+        if (ch.showOpenDialog(null)) {
+            File f = ch.getSelectedFile();
+            if (f != null) {
+                fileName.setText(f.getName());
+                image[0] = new admin.AdminPage().imageIconToBytes(new ImageIcon(f.getAbsolutePath()));
+
+                ImageIcon icon = new ImageIcon(
+                        new ImageIcon(f.getAbsolutePath()).getImage().getScaledInstance(150, 130, Image.SCALE_SMOOTH)
+                );
+                fileLabel.setText("");
+                fileLabel.setIcon(icon);
+            }
+        }
+    }//GEN-LAST:event_fileLabelMouseClicked
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        new ClaimItem().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        new PendingReportItem().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel9MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        new Profile().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel10MouseClicked
 
     public static void isLogin() {
         if (user.Session.currentUsername == null) {
@@ -142,11 +531,9 @@ public final class ItemDisplay extends javax.swing.JFrame {
     }
 
     public void displayItemCards() {
-        cardPanel.removeAll();
-        String query = "SELECT * FROM itemreport";
-        cardPanel.setLayout(new Table.wrapLayout(FlowLayout.LEFT, 15, 15));
+        String query = "SELECT * FROM itemreport WHERE status = 'Posted' AND reportId != ?";
 
-        cardPanel = new JPanel(cardPanel.getLayout()) {
+        JPanel newCardPanel = new JPanel(new Table.wrapLayout(FlowLayout.LEFT, 15, 15)) {
             @Override
             public Dimension getPreferredSize() {
                 if (getParent() instanceof JViewport) {
@@ -157,21 +544,29 @@ public final class ItemDisplay extends javax.swing.JFrame {
             }
         };
 
-        jScrollPane1.setViewportView(cardPanel);
+        newCardPanel.setBackground(Color.white);
+        jScrollPane1.setViewportView(newCardPanel);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
 
-        try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            if (Session.userId != null){
+                  ps.setInt(1, Session.userId);
+            } else {
+                  ps.setInt(1, -1);
+            }
+          
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 JPanel card = createCard(rs);
-                cardPanel.add(card);
+                newCardPanel.add(card);
             }
 
             jScrollPane1.getViewport().addComponentListener(new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
-                    cardPanel.revalidate();
-                    cardPanel.repaint();
+                    newCardPanel.revalidate();
+                    newCardPanel.repaint();
                 }
             });
 
@@ -180,125 +575,211 @@ public final class ItemDisplay extends javax.swing.JFrame {
         }
     }
 
+    Image getScaledImage(Image srcImg, int width, int height) {
+        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+
+        return resizedImg;
+    }
+
     private JPanel createCard(ResultSet rs) throws Exception {
         JPanel card = new JPanel();
-        card.setLayout(new BorderLayout()); // Allows scroll pane to fill the card
-        card.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS)); // Allows scroll pane to fill the card
         card.setBackground(Color.WHITE);
+        card.setPreferredSize(new Dimension(270, 480));
+        card.setMaximumSize(new Dimension(270, 480));
+
+        Timestamp createdAt = rs.getTimestamp("timestamp");
+        String timeAgo = getTimeAgo(createdAt);
+        JPanel timePanel = new JPanel();
+        timePanel.setLayout(new BorderLayout());
+        timePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
+        timePanel.setBackground(Color.white);
+        JLabel time = new JLabel(timeAgo);
+        time.setFont(new Font("Segoe UI Variable", Font.PLAIN, 12));
+        time.setForeground(new Color(137, 137, 137));
+        time.setHorizontalAlignment(JLabel.LEFT);
+        timePanel.add(time);
 
         // Image
         JLabel imageLabel = new JLabel();
-        byte[] imgBytes = rs.getBytes("imageAttach");  // Replace with actual column name
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        imageLabel.setVerticalAlignment(JLabel.CENTER);
+
+        byte[] imgBytes = rs.getBytes("imageAttach");
         if (imgBytes != null) {
             Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
-            Image scaledImg = img.getScaledInstance(250, 200, Image.SCALE_SMOOTH);
+            Image scaledImg = getScaledImage(img, 280, 200);
             imageLabel.setIcon(new ImageIcon(scaledImg));
+
         } else {
             imageLabel.setText("No Image");
         }
 
-        // Info Panel
-        JPanel info = new JPanel();
-        info.setLayout(new BoxLayout(info, BoxLayout.Y_AXIS));
-        info.setBackground(Color.WHITE);
-        info.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imagePanel.add(imageLabel, BorderLayout.NORTH);
+        imagePanel.setBackground(Color.WHITE);
 
+        int width = 235;
+        int height = 20;
+
+        JPanel infos = new JPanel();
+        infos.setBackground(Color.WHITE);
         Font font = new Font("Segoe UI Variable", Font.PLAIN, 14);
 
-        JLabel nameLabel = new JLabel("Name: " + rs.getString("itemName"));
-        nameLabel.setFont(font);
-        info.add(nameLabel);
-        info.add(Box.createRigidArea(new Dimension(0, 2)));
+        userId = rs.getInt("reportId");
+        itemId = rs.getInt("id");
+        JLabel nameLabel = new JLabel(rs.getString("itemName"));
+        nameLabel.setMinimumSize(new Dimension(width, (height + 10)));
+        nameLabel.setPreferredSize(new Dimension(width, (height + 10)));
+        nameLabel.setMaximumSize(new Dimension(width, (height + 10)));
+        nameLabel.setFont(new Font("Segoe UI Variable", Font.BOLD, 16));
+        infos.add(nameLabel);
+        infos.add(Box.createRigidArea(new Dimension(0, 20)));
 
         JLabel locationLabel = new JLabel("Location: " + rs.getString("location"));
+        locationLabel.setMinimumSize(new Dimension(width, height));
+        locationLabel.setPreferredSize(new Dimension(width, height));
+        locationLabel.setMaximumSize(new Dimension(width, height));
         locationLabel.setFont(font);
-        info.add(locationLabel);
-        info.add(Box.createRigidArea(new Dimension(0, 2)));
+        infos.add(locationLabel);
+        infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
         JLabel dateLabel = new JLabel("Date Lost: " + rs.getString("dateLost"));
+        dateLabel.setMinimumSize(new Dimension(width, height));
+        dateLabel.setPreferredSize(new Dimension(width, height));
+        dateLabel.setMaximumSize(new Dimension(width, height));
         dateLabel.setFont(font);
-        info.add(dateLabel);
-        info.add(Box.createRigidArea(new Dimension(0, 2)));
+        infos.add(dateLabel);
+        infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
-        JLabel timeLabel = new JLabel("Time: " + rs.getString("timeLost"));
+        Timestamp timeLost = rs.getTimestamp("timeLost"); // ✅ not getString()
+        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
+        JLabel timeLabel = new JLabel("Time: " + sdf.format(timeLost));
+
+        timeLabel.setMinimumSize(new Dimension(width, height));
+        timeLabel.setPreferredSize(new Dimension(width, height));
+        timeLabel.setMaximumSize(new Dimension(width, height));
         timeLabel.setFont(font);
-        info.add(timeLabel);
-        info.add(Box.createRigidArea(new Dimension(0, 2)));
+        infos.add(timeLabel);
+        infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
         String description = rs.getString("description");
-        JLabel descLbl = new JLabel("<html><body style='width: 130px'>Description: " + description + "</body></html>");
+        JLabel descLbl = new JLabel("<html><body style='width: 185px;'>Description: " + description + "</body></html>");
         descLbl.setFont(font);
-        descLbl.setAlignmentX(LEFT_ALIGNMENT);
-        info.add(descLbl);
+        infos.add(descLbl);
 
-        JButton claimBtn = new JButton("Claim This Item");
-        claimBtn.setOpaque(true);
-        claimBtn.setContentAreaFilled(false);
-        claimBtn.setBorder(new LineBorder(Color.black, 1));
-        claimBtn.setBorderPainted(true);
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(Color.WHITE);
+
+        JButton claimBtn = new JButton("Claim");
+        claimBtn.setBorder(new Table.RoundedBorder(10));
+        claimBtn.setBackground(new Color(0, 0, 204)); // nice blue
+        claimBtn.setForeground(Color.WHITE);
+
+        // optional: size
+        claimBtn.setPreferredSize(new Dimension(240, 40));
+        btnPanel.add(claimBtn);
 
         String itemName = rs.getString("itemName");
 
-        claimBtn.addActionListener(e -> {
+        claimBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!checkUserLogin(new ItemDisplay())) {
+                    dispose();
+                    return; // block if not logged in
+                }
+                jDialog1.setTitle("Claim Item: " + itemName);
+                jDialog1.setVisible(true);
+                jDialog1.pack();
+                jDialog1.setLocationRelativeTo(new ItemDisplay());
+            }
 
-            JPanel lblpanel = new JPanel();
-            JLabel lbl = new JLabel("Other information provided on your profile");
-            lbl.setFont(font);
-            lblpanel.add(lbl);
-
-            // Fields
-            JTextField studentNumField = new JTextField(15);
-            JTextArea inquiryArea = new JTextArea(3, 15);
-            inquiryArea.setLineWrap(true);
-            inquiryArea.setWrapStyleWord(true);
-            JScrollPane inquiryScroll = new JScrollPane(inquiryArea);
-
-            // Main Panel
-            JPanel panel = new JPanel();
-            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            panel.add(lblpanel);
-            panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-            // Student Number Panel
-            JPanel studentPanel = new JPanel(new BorderLayout());
-            studentPanel.add(new JLabel("Student Number:"), BorderLayout.NORTH);
-            studentPanel.add(studentNumField, BorderLayout.CENTER);
-            studentPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-            panel.add(studentPanel);
-            panel.add(Box.createRigidArea(new Dimension(0, 10)));
-
-            // Inquiry Panel
-            JPanel inquiryPanel = new JPanel(new BorderLayout());
-            inquiryPanel.add(new JLabel("Inquiry:"), BorderLayout.NORTH);
-            inquiryPanel.add(inquiryScroll, BorderLayout.CENTER);
-            panel.add(inquiryPanel);
-
-            int result = JOptionPane.showConfirmDialog(null, panel,
-                    "Claim Item: " + itemName, JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE);
-
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                claimBtn.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Make it look clickable
+            }
         });
-        info.add(Box.createRigidArea(new Dimension(0, 15)));
-        info.add(claimBtn);
+
         JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setLayout(
+                new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(Color.white);
-        contentPanel.add(imageLabel);
-        contentPanel.add(Box.createVerticalStrut(5));
-        contentPanel.add(info);
+        imagePanel.setMaximumSize(new Dimension(280, 200));
+        imagePanel.setBackground(Color.red);
+        contentPanel.add(imagePanel);
+        infos.setPreferredSize(new Dimension(280, 180));
+        infos.setMaximumSize(new Dimension(280, 190));
+        contentPanel.add(infos);
+        btnPanel.setMaximumSize(new Dimension(260, 50));
+        contentPanel.add(btnPanel);
 
-        JScrollPane scrollPane = new JScrollPane(
-                contentPanel,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-        );
-        scrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-        scrollPane.setPreferredSize(new Dimension(250, 400));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+        contentPanel.setPreferredSize(new Dimension(270, 450));
+        contentPanel.setMaximumSize(new Dimension(270, 460));
+        contentPanel.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
 
-        card.add(scrollPane);
+        card.add(timePanel);
+        card.add(contentPanel);
+
         return card;
+
+    }
+
+    public boolean checkUserLogin(JFrame parentFrame) {
+        if (Session.currentUsername == null) { // or !Session.isLoggedIn if you have a flag
+            int choice = JOptionPane.showConfirmDialog(
+                    parentFrame,
+                    "You are not logged in. Do you want to login first?",
+                    "Login Required",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                parentFrame.dispose(); // Close current frame if needed
+                new userAuth.Login().setVisible(true);
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    public String getTimeAgo(Timestamp past) {
+        if (past == null) {
+            return "Unknown time";
+        }
+
+        long millisecondsAgo = System.currentTimeMillis() - past.getTime();
+        if (millisecondsAgo < 0) {
+            return "In the future";
+        }
+
+        long seconds = millisecondsAgo / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+
+        if (seconds < 10) {
+            return "Just now";
+        } else if (seconds < 60) {
+            return seconds + " second" + (seconds == 1 ? "" : "s") + " ago";
+        } else if (minutes < 60) {
+            return minutes + " minute" + (minutes == 1 ? "" : "s") + " ago";
+        } else if (hours < 24) {
+            return hours + " hour" + (hours == 1 ? "" : "s") + " ago";
+        } else {
+            return days + " day" + (days == 1 ? "" : "s") + " ago";
+        }
     }
 
     public static void main(String args[]) {
@@ -326,21 +807,38 @@ public final class ItemDisplay extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ItemDisplay().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ItemDisplay().setVisible(true);
         });
-        isLogin();
+//        isLogin();
     }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardPanel;
+    private javax.swing.JLabel fileLabel;
+    private javax.swing.JLabel fileName;
+    private javax.swing.JTextArea inquiryArea;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField studentNumField;
     // End of variables declaration//GEN-END:variables
 }

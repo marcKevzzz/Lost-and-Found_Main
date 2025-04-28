@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import jnafilechooser.api.JnaFileChooser;
+import static user.Session.currentUsername;
+import static user.Session.userSchoolId;
 
 /**
  *
@@ -57,22 +59,13 @@ public class ItemReport extends javax.swing.JFrame {
         jOptionPane1 = new javax.swing.JOptionPane();
         spane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
-        phoneTxt = new javax.swing.JTextField();
         nameTxt = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         descTxt = new javax.swing.JTextArea();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        timeTxt = new javax.swing.JTextField();
-        userNameTxt = new javax.swing.JTextField();
-        yrsecTxt = new javax.swing.JTextField();
-        emailTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
         locationTxt = new javax.swing.JTextField();
@@ -92,6 +85,7 @@ public class ItemReport extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        timeTxt = new javax.swing.JTextField();
 
         date.setDateFormat("yyyy-MM-dd");
         date.setTextRefernce(dateTxt);
@@ -99,7 +93,8 @@ public class ItemReport extends javax.swing.JFrame {
         time.setDisplayText(timeTxt);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1000, 700));
+        setMinimumSize(new java.awt.Dimension(1000, 500));
+        setUndecorated(true);
 
         spane1.setBackground(new java.awt.Color(255, 255, 255));
         spane1.setBorder(null);
@@ -107,69 +102,23 @@ public class ItemReport extends javax.swing.JFrame {
         spane1.setToolTipText("");
         spane1.setMinimumSize(new java.awt.Dimension(100, 700));
 
-        jPanel1.setPreferredSize(new java.awt.Dimension(1200, 800));
-        jPanel1.setLayout(null);
-        jPanel1.add(phoneTxt);
-        phoneTxt.setBounds(250, 620, 370, 30);
-        jPanel1.add(nameTxt);
-        nameTxt.setBounds(250, 160, 370, 30);
+        jPanel1.setPreferredSize(new java.awt.Dimension(1000, 700));
 
         descTxt.setColumns(20);
         descTxt.setRows(5);
         jScrollPane1.setViewportView(descTxt);
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(250, 320, 370, 60);
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        jLabel1.setText("Phone");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(60, 620, 140, 20);
-
         jLabel3.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel3.setText("Name");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(60, 160, 110, 20);
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel4.setText("Time Lost");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(60, 280, 110, 20);
-
-        timeTxt.setEditable(false);
-        jPanel1.add(timeTxt);
-        timeTxt.setBounds(250, 280, 220, 30);
-        jPanel1.add(userNameTxt);
-        userNameTxt.setBounds(250, 500, 370, 30);
-        jPanel1.add(yrsecTxt);
-        yrsecTxt.setBounds(250, 540, 370, 30);
-        jPanel1.add(emailTxt);
-        emailTxt.setBounds(250, 580, 370, 30);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel5.setText("Description");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(60, 320, 110, 20);
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel6.setText("Image Attachment");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(60, 400, 140, 20);
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        jLabel7.setText("Name");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(60, 500, 140, 20);
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        jLabel8.setText("Year and Section");
-        jPanel1.add(jLabel8);
-        jLabel8.setBounds(60, 540, 140, 20);
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
-        jLabel9.setText("Email");
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(60, 580, 140, 20);
 
         jButton1.setText("SUBMIT");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -177,15 +126,9 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(420, 680, 200, 40);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel10.setText("Location");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(60, 200, 110, 20);
-        jPanel1.add(locationTxt);
-        locationTxt.setBounds(250, 200, 370, 30);
 
         jButton2.setText("Choose File");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -193,37 +136,27 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2);
-        jButton2.setBounds(250, 400, 120, 23);
-        jPanel1.add(dateTxt);
-        dateTxt.setBounds(250, 240, 220, 30);
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel11.setText("Date Lost");
-        jPanel1.add(jLabel11);
-        jLabel11.setBounds(60, 240, 110, 20);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(labelShowImage, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelShowImage, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(labelShowImage, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 12, Short.MAX_VALUE)
+                .addComponent(labelShowImage, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jPanel1.add(jPanel2);
-        jPanel2.setBounds(680, 120, 360, 260);
-
         labelShowFile.setText("No file choosen");
-        jPanel1.add(labelShowFile);
-        labelShowFile.setBounds(380, 400, 240, 20);
 
         jButton3.setText("Date Now");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -231,8 +164,6 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3);
-        jButton3.setBounds(530, 240, 90, 30);
 
         jButton5.setText("Time Now");
         jButton5.addActionListener(new java.awt.event.ActionListener() {
@@ -240,8 +171,6 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5);
-        jButton5.setBounds(530, 280, 90, 30);
 
         jButton4.setText("...");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -249,8 +178,6 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4);
-        jButton4.setBounds(480, 280, 40, 30);
 
         jButton6.setText("...");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -258,52 +185,157 @@ public class ItemReport extends javax.swing.JFrame {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton6);
-        jButton6.setBounds(480, 240, 40, 30);
 
-        categoryCb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Category", "Purse", "Accessories", "Money", "Pet", "School Material" }));
+        categoryCb.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Category", "Personal Items (Accessories)", "Electronics (Cellphone)", "Stationery & School Supplies", "Sports Equipment", "Miscellaneous (Umbrella)", "Others", " ", " " }));
         categoryCb.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 categoryCbActionPerformed(evt);
             }
         });
-        jPanel1.add(categoryCb);
-        categoryCb.setBounds(250, 120, 220, 30);
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel12.setText("Lorem Ipsum Lorem Ipsumm hahsdhh hashd");
-        jPanel1.add(jLabel12);
-        jLabel12.setBounds(60, 70, 330, 20);
 
         jLabel13.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
-        jLabel13.setText("Provide Your Contact Information");
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(60, 460, 390, 20);
+        jLabel13.setText("Your Contact Information Provided In Your Profile");
 
         jLabel14.setFont(new java.awt.Font("Segoe UI Variable", 0, 14)); // NOI18N
         jLabel14.setText("Category");
-        jPanel1.add(jLabel14);
-        jLabel14.setBounds(60, 120, 110, 20);
 
         jLabel15.setFont(new java.awt.Font("Segoe UI Variable", 1, 20)); // NOI18N
         jLabel15.setText("Report a Lost Item");
-        jPanel1.add(jLabel15);
-        jLabel15.setBounds(60, 40, 240, 20);
 
-        jLabel2.setText("<html><body><a href='#'>Back</a></body></html>");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setText("<html><body><a href='#' style='color: black; text-decoration: none' >Back</a></body></html>");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(30, 10, 350, 16);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(50, 50, 50)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(labelShowFile, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(360, 360, 360)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(80, 80, 80)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(categoryCb, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(nameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(locationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addComponent(timeTxt)
+                                                    .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(10, 10, 10)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(10, 10, 10)
+                                                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGap(10, 10, 10)
+                                                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                                .addGap(30, 30, 30)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(15, 15, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel12)
+                        .addGap(30, 30, 30)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel3)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel10)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel11)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel4)
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel5))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(categoryCb, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(nameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(locationTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(dateTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(timeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(20, 20, 20)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel6)
+                    .addComponent(jButton2)
+                    .addComponent(labelShowFile, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(153, 153, 153))
+        );
 
         spane1.setViewportView(jPanel1);
 
         getContentPane().add(spane1, java.awt.BorderLayout.CENTER);
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -352,11 +384,12 @@ public class ItemReport extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String query = "INSERT INTO itemReport (category, itemName, location, dateLost, timeLost, description, imageAttach, name, yearSec, email, phone) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+       
 
-          try (Connection conn = DataBase.getConnection();
-            PreparedStatement pst = conn.prepareStatement(query)) { //Connecting into databse
+        String query = "INSERT INTO itemReport (category, itemName, location, dateLost, timeLost, description, imageAttach, name, studentNum, yearSec, email, phone, reportId, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
+
+        try (Connection conn = DataBase.getConnection(); PreparedStatement pst = conn.prepareStatement(query)) { //Connecting into databse
 
             StringBuilder errors = new StringBuilder(); // Collecting all errors for one output
 
@@ -376,17 +409,6 @@ public class ItemReport extends javax.swing.JFrame {
             if (labelShowFile.getText().equals("No file choosen") || labelShowFile.getText().isBlank()) {
                 errors.append("- Please attach an image\n");
             }
-            if (userNameTxt.getText().trim().isEmpty()) {
-                errors.append("- Your name is required\n");
-            }
-            if (yrsecTxt.getText().trim().isEmpty()) {
-                errors.append("- Year and Section is required\n");
-            }
-            if (phoneTxt.getText().trim().isEmpty()) {
-                errors.append("- Phone number is required\n");
-            } else if (!phoneTxt.getText().matches("^(09|\\+639)\\d{9}$")) {
-                errors.append("- Invalid Phone number\n");
-            }
 
             // If there are any errors, show them all at once
             if (errors.length() > 0) {
@@ -401,10 +423,40 @@ public class ItemReport extends javax.swing.JFrame {
             String dateLost = dateTxt.getText();// or parse from a date picker
             String timeInput = timeTxt.getText().trim(); // e.g., 10:30AM
             String description = descTxt.getText().trim();
-            String userName = userNameTxt.getText().trim();
-            String yrSec = yrsecTxt.getText().trim();
-            String phone = phoneTxt.getText().trim();
-            String email = emailTxt.getText().trim();
+            String firstName = "";
+            String lastName = "";
+            String studentNum = "";
+            String yearSec = "";
+            String email = "";
+            String phone = "";
+            int reportId = Session.userId;
+
+            if (Session.userId != null) {
+                try (Connection con = DBConnection.DataBase.getConnection()) {
+                    String sql = "SELECT * FROM users_tbl WHERE id=?";
+                    PreparedStatement stmt = con.prepareStatement(sql);
+                    stmt.setInt(1, Session.userId);
+                    ResultSet rs = stmt.executeQuery();
+
+                    if (rs.next()) {
+                        // Text fields
+                        firstName = rs.getString("firstName");
+                        lastName = rs.getString("lastName");
+                        studentNum = rs.getString("schoolId");
+                        yearSec = rs.getString("yearSec");
+                        email = rs.getString("email");
+                        if (rs.getString("phone") != null) {
+                            phone = rs.getString("phone");
+                        }
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "User not found.");
+
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error loading user data." + e.getMessage());
+                }
+            }
 
             SimpleDateFormat inputFormat = new SimpleDateFormat("hh:mm a");
             SimpleDateFormat sqlTimeFormat = new SimpleDateFormat("HH:mm:ss");
@@ -425,7 +477,7 @@ public class ItemReport extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "File does not exist: " + f.getAbsolutePath());
                 return;
             }
-            
+
             pst.setString(1, category);
             pst.setString(2, itemName);
             pst.setString(3, location);
@@ -433,19 +485,20 @@ public class ItemReport extends javax.swing.JFrame {
             pst.setString(5, formattedTime);
             pst.setString(6, description);
             pst.setBlob(7, in);
-            pst.setString(8, userName);
-            pst.setString(9, yrSec);
-            pst.setString(10, email);
-            pst.setString(11, phone);
+            pst.setString(8, firstName + ", " + lastName);
+            pst.setString(9, studentNum);
+            pst.setString(10, yearSec);
+            pst.setString(11, email);
+            pst.setString(12, phone);
+            pst.setInt(13, reportId);
 
             int rows = pst.executeUpdate();
             if (rows > 0) {
                 JOptionPane.showMessageDialog(null, "Lost item added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-               
+                new ItemDisplay().setVisible(true);
             }
 
-            
         } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
         } catch (FileNotFoundException ex) {
@@ -459,6 +512,7 @@ public class ItemReport extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
 
+        
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
@@ -504,14 +558,12 @@ public class ItemReport extends javax.swing.JFrame {
     private com.raven.datechooser.DateChooser date;
     private javax.swing.JTextField dateTxt;
     private javax.swing.JTextArea descTxt;
-    private javax.swing.JTextField emailTxt;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -523,9 +575,6 @@ public class ItemReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -534,11 +583,8 @@ public class ItemReport extends javax.swing.JFrame {
     private javax.swing.JLabel labelShowImage;
     private javax.swing.JTextField locationTxt;
     private javax.swing.JTextField nameTxt;
-    private javax.swing.JTextField phoneTxt;
     private javax.swing.JScrollPane spane1;
     private com.raven.swing.TimePicker time;
     private javax.swing.JTextField timeTxt;
-    private javax.swing.JTextField userNameTxt;
-    private javax.swing.JTextField yrsecTxt;
     // End of variables declaration//GEN-END:variables
 }

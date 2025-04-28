@@ -28,10 +28,11 @@ public class ImageCellEditor extends AbstractCellEditor implements TableCellEdit
     private ImageIcon currentIcon;
     private int row;
     private JTable table;
-    public boolean isEditable = false;
+    public int isEditable = -1;
     private int column;
+    private File selectedFile;
 
-    public ImageCellEditor(JTable table) {
+    public ImageCellEditor(JTable table, int col) {
         this.table = table;
         imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -40,11 +41,11 @@ public class ImageCellEditor extends AbstractCellEditor implements TableCellEdit
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                if (isEditable) {
+                if (isEditable != -1) {
                     int clickedRow = table.rowAtPoint(e.getPoint());
                     int clickedColumn = table.columnAtPoint(e.getPoint());
                     
-                    if (clickedColumn == 1 && clickedRow != -1) {
+                    if (clickedColumn == col && clickedRow != -1 && clickedRow == row) {
                         JnaFileChooser ch = new JnaFileChooser();
                         ch.setMode(JnaFileChooser.Mode.Files);
                         ch.addFilter("Image Files", "jpg", "jfif", "jpeg", "png", "gif", "bmp");
@@ -53,7 +54,8 @@ public class ImageCellEditor extends AbstractCellEditor implements TableCellEdit
                         if (act) {
                             File file = ch.getSelectedFile();
                             String filePath = file.getAbsolutePath();
-
+                            selectedFile = file;
+                            
                             ImageIcon originalIcon = new ImageIcon(filePath);
                             Image originalImage = originalIcon.getImage();
                             int originalWidth = originalImage.getWidth(null);
@@ -65,16 +67,32 @@ public class ImageCellEditor extends AbstractCellEditor implements TableCellEdit
                             currentIcon = new ImageIcon(scaledImage);
 
                             // update table model directly
-                            table.setValueAt(currentIcon, row, 1);
+                            table.setValueAt(currentIcon, row, col);
                         }
                     }
                 }
             }
         });
     }
+    
+    public File getSelectedFile() {
+        return selectedFile;
+    }
+    
+    public byte[] getSelectedFileBytes() {
+        if (selectedFile != null) {
+            try {
+                return java.nio.file.Files.readAllBytes(selectedFile.toPath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     // Add this inside ImageCellEditor
-    public void setEditable(boolean editable) {
+    public void setEditable(int editable) {
         this.isEditable = editable;
     }
 

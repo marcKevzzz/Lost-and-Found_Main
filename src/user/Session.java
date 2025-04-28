@@ -10,7 +10,8 @@ package user;
  */
 public class Session {
     public static String currentUsername = null;
-    public static String userSchoolId;
+    public static String userSchoolId = null;
+    public static Integer userId = null;
     
 }
 

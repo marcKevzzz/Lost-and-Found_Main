@@ -2,38 +2,32 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package Table;
+package Table.userManagement;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
 /**
  *
  * @author QCU
  */
-public class CellPanelAction extends javax.swing.JPanel {
+public class UserCellPanelAction extends javax.swing.JPanel {
 
     /**
-     * Creates new form CellPanelAction
+     * Creates new form UserCellPanelAction
      */
-    public CellPanelAction() {
+    public UserCellPanelAction() {
         initComponents();
         edit.setToolTipText("Edit");
         delete.setToolTipText("Mark as Done/Inactive");
-        view.setToolTipText("View Details");
-
     }
     
-    public void initEvent(TableActionEvent event, int row){
+    public void initEvent(UserTableActionEvent event, int row){
         edit.addActionListener((ActionEvent e) -> {
             event.onEdit(row);
         });
         delete.addActionListener((ActionEvent e) -> {
             event.onStatus(row);
-        });
-        view.addActionListener((ActionEvent e) -> {
-            event.onView(row);
         });
     }
     
@@ -57,13 +51,11 @@ public class CellPanelAction extends javax.swing.JPanel {
 
         edit = new Table.ActionButton();
         delete = new Table.ActionButton();
-        view = new Table.ActionButton();
 
         edit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Table/edit.png"))); // NOI18N
+        edit.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Table/status.png"))); // NOI18N
-
-        view.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Table/view.png"))); // NOI18N
+        delete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Table/ban.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -71,11 +63,9 @@ public class CellPanelAction extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(view, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -83,9 +73,8 @@ public class CellPanelAction extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(delete, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(view, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(edit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -94,6 +83,5 @@ public class CellPanelAction extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Table.ActionButton delete;
     private Table.ActionButton edit;
-    private Table.ActionButton view;
     // End of variables declaration//GEN-END:variables
 }
