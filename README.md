@@ -2,12 +2,11 @@
 This is a simple Lost and Found System built using [your tech stack—e.g., Java, MySQL, etc.]. It helps users report lost items, post found items, and search for matching reports. Ideal for schools, universities, and public institutions.
 
 **📋 Features**
- - 🔍 Search for lost or found items
- - 📤 Report lost items
+ - 🔍 Search for lost or found item 
  - 🧾 Post found items
  - ✅ Admin approval system 
  - 📅 Date and location 
- - 📨 Contact system between users
+ - 📨 Claim item between users
 
 **🚀 Technologies Used**
  - Java (Swing GUI)
