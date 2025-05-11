@@ -52,7 +52,7 @@ public class SignUp extends javax.swing.JFrame {
         signupBtn = new javax.swing.JButton();
         fullnameTxt1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        studentNumTxt1 = new javax.swing.JTextField();
+        yearSecTxt = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jCheckBox1 = new javax.swing.JCheckBox();
         passwordTxt = new javax.swing.JPasswordField();
@@ -164,7 +164,7 @@ public class SignUp extends javax.swing.JFrame {
 
         jLabel5.setText("Last Name");
 
-        studentNumTxt1.setBorder(null);
+        yearSecTxt.setBorder(null);
 
         jLabel6.setText("Year & Section");
 
@@ -208,7 +208,7 @@ public class SignUp extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(studentNumTxt1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                            .addComponent(yearSecTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                             .addComponent(studentNumTxt)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -234,8 +234,8 @@ public class SignUp extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -250,7 +250,7 @@ public class SignUp extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(studentNumTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(yearSecTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -298,7 +298,13 @@ public class SignUp extends javax.swing.JFrame {
             StringBuilder errors = new StringBuilder();
 
             if (fullnameTxt.getText().trim().isEmpty()) {
-                errors.append("- Full Name is required\n");
+                errors.append("- First Name is required\n");
+            }
+              if (fullnameTxt1.getText().trim().isEmpty()) {
+                errors.append("- Last Name is required\n");
+            }
+              if (yearSecTxt.getText().trim().isEmpty()) {
+                errors.append("- Year and Section is required\n");
             }
 
             if (emailTxt.getText().trim().isEmpty()) {
@@ -306,10 +312,13 @@ public class SignUp extends javax.swing.JFrame {
             } else if (!emailTxt.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 errors.append("- Invalid Email Address\n");
             }
+            
+             char[] passwordChars = passwordTxt.getPassword();
+            String password = new String(passwordChars);
 
-            if (passwordTxt.getText().trim().isEmpty()) {
+            if (password.trim().isEmpty()) {
                 errors.append("- Password is required\n");
-            } else if (passwordTxt.getText().length() < 8) {
+            } else if (password.length() < 8) {
                 errors.append("- Password must contain at least 8 characters\n");
             }
 
@@ -328,19 +337,20 @@ public class SignUp extends javax.swing.JFrame {
                     }
                 }
             }
-            char[] passwordChars = passwordTxt.getPassword();
-            String password = new String(passwordChars);
+           
 
 
             if (errors.length() > 0) {
                 jOptionPane1.showMessageDialog(this, errors.toString(), "Validation Errors", jOptionPane1.ERROR_MESSAGE);
             } else {
-                String query = "INSERT INTO users_tbl (fullName, email, schoolID, password) VALUES (?, ?, ?, ?)";
+                String query = "INSERT INTO users_tbl (firstName, lastName, email, schoolID, yearSec, password, Status) VALUES (?, ?, ?,?, ?, ?, 1)";
                 try (PreparedStatement pstmt = con.prepareStatement(query)) {
                     pstmt.setString(1, fullnameTxt.getText());
-                    pstmt.setString(2, emailTxt.getText());
-                    pstmt.setString(3, studentNumTxt.getText());
-                    pstmt.setString(4, password);
+                    pstmt.setString(2, fullnameTxt1.getText());
+                    pstmt.setString(3, emailTxt.getText());
+                    pstmt.setString(4, studentNumTxt.getText());
+                    pstmt.setString(5, yearSecTxt.getText());
+                    pstmt.setString(6, password);
                     pstmt.executeUpdate();
 
                     // Set session
@@ -441,6 +451,6 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordTxt;
     private javax.swing.JButton signupBtn;
     private javax.swing.JTextField studentNumTxt;
-    private javax.swing.JTextField studentNumTxt1;
+    private javax.swing.JTextField yearSecTxt;
     // End of variables declaration//GEN-END:variables
 }

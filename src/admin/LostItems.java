@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -37,6 +38,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+import user.Session;
 
 /**
  *
@@ -767,7 +769,9 @@ public class LostItems extends javax.swing.JFrame {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         lostFoundTable.getColumnModel().getColumn(1).setCellEditor(imageEditor);
-
+        if (checkUserLogin(this));
+          
+        
         hideColumn(0);
         hideColumn(1);
         hideColumn(10);
@@ -886,7 +890,7 @@ public class LostItems extends javax.swing.JFrame {
                     } else if (statusObj.equalsIgnoreCase("Pending")) {
                         c.setBackground(new Color(255, 204, 0));
                         c.setForeground(Color.BLACK);
-                    } else if (statusObj.equalsIgnoreCase("Claim Requested")) {
+                    } else if (statusObj.equalsIgnoreCase("Claim Request")) {
                         c.setBackground(new Color(128, 0, 128));
                         c.setForeground(Color.BLACK);
                     } else if (statusObj.equalsIgnoreCase("Claim Approved")) {
@@ -950,6 +954,30 @@ public class LostItems extends javax.swing.JFrame {
         // Assuming tableModel is your JTable's model
         return (int) lostFoundTable.getValueAt(row, 0); // Column 0 holds user ID
     }
+    
+    public boolean checkUserLogin(JFrame parentFrame) {
+        if (Session.currentUsername == null) {
+            int choice = JOptionPane.showConfirmDialog(
+                    parentFrame,
+                    "You are not logged in. Do you want to login first?",
+                    "Login Required",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                parentFrame.dispose(); // Only close if they choose to log in
+                new userAuth.Login().setVisible(true);
+                return false; // Allow continuing if logged in
+            } else if (choice == JOptionPane.NO_OPTION || choice == JOptionPane.CLOSED_OPTION) {
+                parentFrame.dispose();
+                  new userAuth.Login().setVisible(true);
+                return false; // Block further action
+            }
+        }
+        return true;
+
+    }
 
     private void hideColumn(int index) {
         TableColumn col = lostFoundTable.getColumnModel().getColumn(index);
@@ -992,8 +1020,7 @@ public class LostItems extends javax.swing.JFrame {
                 new LostItems().setVisible(true);
             }
         });
-        AdminPage ap = new AdminPage();
-        ap.isLogin();
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

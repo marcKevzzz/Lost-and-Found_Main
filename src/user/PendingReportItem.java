@@ -548,11 +548,11 @@ public final class PendingReportItem extends javax.swing.JFrame {
                         statusPanel.setForeground(Color.BLACK); // Ensure black text
                     } else if (status.equalsIgnoreCase("Claim Pending")) {
                         statusPanel.setBackground(new Color(255, 255, 102)); // Pending Claim
-                        statusPanel.setForeground(Color.BLACK); // Ensure black text
+                        statusLbl.setForeground(Color.BLACK); // Ensure black text
                     } else if (status.equalsIgnoreCase("Pending")) {
                         statusPanel.setBackground(new Color(255, 204, 0));
                         statusPanel.setForeground(Color.BLACK);
-                    } else if (status.equalsIgnoreCase("Claim Requested")) {
+                    } else if (status.equalsIgnoreCase("Claim Request")) {
                         statusPanel.setBackground(new Color(128, 0, 128));
                         statusPanel.setForeground(Color.BLACK);
                     } else if (status.equalsIgnoreCase("Claim Approved")) {

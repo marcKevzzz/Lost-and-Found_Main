@@ -50,6 +50,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.event.TableModelEvent;
@@ -254,7 +255,7 @@ public final class AdminPage extends javax.swing.JFrame {
                             } else {
                                 return;
                             }
-                        }else {
+                        } else {
                             JOptionPane.showConfirmDialog(null, "Can't modify");
                             return;
                         }
@@ -744,7 +745,7 @@ public final class AdminPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-
+        checkUserLogin(this);
         lostFoundTable.getColumnModel().getColumn(1).setCellEditor(imageEditor);
 
         hideColumn(0);
@@ -865,7 +866,7 @@ public final class AdminPage extends javax.swing.JFrame {
                     } else if (statusObj.equalsIgnoreCase("Pending")) {
                         c.setBackground(new Color(255, 204, 0));
                         c.setForeground(Color.BLACK);
-                    } else if (statusObj.equalsIgnoreCase("Claim Requested")) {
+                    } else if (statusObj.equalsIgnoreCase("Claim Request")) {
                         c.setBackground(new Color(128, 0, 128));
                         c.setForeground(Color.BLACK);
                     } else if (statusObj.equalsIgnoreCase("Claim Approved")) {
@@ -997,13 +998,27 @@ public final class AdminPage extends javax.swing.JFrame {
 
     }
 
-    public static void isLogin() {
-        if (user.Session.currentUsername == null) {
-            JOptionPane.showMessageDialog(null, "Please login first.");
-            new userAuth.Login().setVisible(true);
-        } else {
-            new AdminPage().setVisible(true);
+    public boolean checkUserLogin(JFrame parentFrame) {
+        if (Session.currentUsername == null) {
+            int choice = JOptionPane.showConfirmDialog(
+                    parentFrame,
+                    "You are not logged in. Do you want to login first?",
+                    "Login Required",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                parentFrame.dispose(); // Only close if they choose to log in
+                new userAuth.Login().setVisible(true);
+                return false; // Allow continuing if logged in
+            } else if (choice == JOptionPane.NO_OPTION || choice == JOptionPane.CLOSED_OPTION) {
+                parentFrame.dispose(); // Only close if they choose to log in
+                new userAuth.Login().setVisible(true);
+                return false; // Block further action
+            }
         }
+        return true;
 
     }
 
@@ -1053,7 +1068,6 @@ public final class AdminPage extends javax.swing.JFrame {
                 new AdminPage().setVisible(true);
             }
         });
-        isLogin();
     }
 
 
