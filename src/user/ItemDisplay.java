@@ -27,14 +27,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
@@ -52,6 +57,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -77,7 +83,8 @@ public final class ItemDisplay extends javax.swing.JFrame {
      */
     public ItemDisplay() {
         initComponents();
-        displayItemCards();
+          displayAllItemsWithFilter(jScrollPane1, "lost");
+        displayAllItemsWithFilter(jScrollPane3, "found");
         if (!jDialog1.isVisible()) {
             image[0] = null;
             fileName.setText("No file choosen");
@@ -86,7 +93,8 @@ public final class ItemDisplay extends javax.swing.JFrame {
             @Override
             public void windowClosed(java.awt.event.WindowEvent e) {
                 // 🔁 Refresh your table or panel here
-                displayItemCards(); // or your refresh method
+                  displayAllItemsWithFilter(jScrollPane1, "lost");
+    displayAllItemsWithFilter(jScrollPane3, "found");
 
             }
         });
@@ -95,7 +103,7 @@ public final class ItemDisplay extends javax.swing.JFrame {
     StringBuilder errors = new StringBuilder();
     user.ItemReport r = new user.ItemReport();
     int itemId;
-    int userId ;
+    int userId;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -119,18 +127,28 @@ public final class ItemDisplay extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         fileName = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
+        fname1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        tabPaneLostFound = new javax.swing.JTabbedPane();
+        jPanel12 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cardPanel = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        cardPanel1 = new javax.swing.JPanel();
 
         jDialog1.setResizable(false);
 
@@ -231,123 +249,212 @@ public final class ItemDisplay extends javax.swing.JFrame {
         jDialog1.getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(800, 400));
         setPreferredSize(new java.awt.Dimension(1300, 700));
         setSize(new java.awt.Dimension(1300, 700));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
-        jPanel1.setBackground(new java.awt.Color(234, 234, 234));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        jPanel6.setBackground(new java.awt.Color(0, 0, 204));
-        jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
-        jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
+        jPanel7.setBackground(new java.awt.Color(0, 39, 117));
+        jPanel7.setForeground(new java.awt.Color(51, 51, 51));
 
-        jPanel7.setOpaque(false);
-        jPanel7.setPreferredSize(new java.awt.Dimension(70, 60));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-logo.png"))); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("QCU");
+        jLabel22.setBackground(new java.awt.Color(0, 51, 153));
+        jLabel22.setFont(new java.awt.Font("Segoe UI Symbol", 1, 24)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setText("Lost and Found");
+
+        profile.setBackground(new java.awt.Color(255, 0, 0));
+        profile.setFont(new java.awt.Font("Segoe UI Variable", 0, 16)); // NOI18N
+        profile.setForeground(new java.awt.Color(255, 255, 255));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-4-32.png"))); // NOI18N
+        profile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+
+        fname1.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        fname1.setForeground(new java.awt.Color(255, 255, 255));
+        fname1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fname1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addContainerGap())
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(profile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                .addGap(8, 8, 8))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(fname1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel6.setBackground(new java.awt.Color(0, 51, 153));
+        jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
+        jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel8.setBackground(new java.awt.Color(0, 51, 255));
         jPanel8.setMinimumSize(new java.awt.Dimension(32, 20));
+        jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 105, -1, 35));
 
-        jLabel7.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Found Item ");
-        jPanel8.add(jLabel7, java.awt.BorderLayout.CENTER);
+        jPanel17.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel17.setOpaque(false);
 
-        jLabel8.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Claim Item");
-        jLabel8.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
-            }
-        });
-
-        jLabel9.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Pending Report");
-        jLabel9.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
-            }
-        });
-
-        jLabel10.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Profile");
-        jLabel10.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel10MouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(420, Short.MAX_VALUE))
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(100, 100));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 100, -1, -1));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html><body style='margin-left: 10px;'><a href='#'> Report Item</a></body></html>");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel18.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel18.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 482, -1, -1));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel18.setText("  Lost and Found");
+        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
+                jLabel18MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, 35));
+
+        jLabel27.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel27.setText("  Pending Report");
+        jLabel27.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel27.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel27.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel27MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 150, 30));
+
+        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 34, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, -1));
+
+        jLabel21.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel21.setText("  Claim Item");
+        jLabel21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel21.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel21MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 35));
+
+        jLabel19.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel19.setText("  Report Item");
+        jLabel19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel19.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
+
+        jLabel20.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel20.setText("  Profile");
+        jLabel20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel20.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel20MouseEntered(evt);
+            }
+        });
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 150, 34));
+
+        tabPaneLostFound.setBackground(new java.awt.Color(255, 255, 255));
+        tabPaneLostFound.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tabPaneLostFound.setFocusable(false);
+        tabPaneLostFound.setFont(new java.awt.Font("Segoe UI Semibold", 0, 15)); // NOI18N
+        tabPaneLostFound.setOpaque(true);
+        tabPaneLostFound.setRequestFocusEnabled(false);
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(null);
@@ -366,52 +473,100 @@ public final class ItemDisplay extends javax.swing.JFrame {
         cardPanel.setLayout(cardPanelLayout);
         cardPanelLayout.setHorizontalGroup(
             cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1212, Short.MAX_VALUE)
+            .addGap(0, 1098, Short.MAX_VALUE)
         );
         cardPanelLayout.setVerticalGroup(
             cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
+            .addGap(0, 551, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(cardPanel);
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1098, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 64, Short.MAX_VALUE))
+        );
+
+        tabPaneLostFound.addTab("Lost Items ", jPanel12);
+
+        jScrollPane3.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane3.setBorder(null);
+        jScrollPane3.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane3.setFocusable(false);
+        jScrollPane3.setMinimumSize(new java.awt.Dimension(50, 50));
+        jScrollPane3.setOpaque(false);
+
+        cardPanel1.setBackground(new java.awt.Color(234, 234, 234));
+        cardPanel1.setMinimumSize(new java.awt.Dimension(100, 100));
+        cardPanel1.setOpaque(false);
+        cardPanel1.setPreferredSize(new java.awt.Dimension(1100, 600));
+
+        javax.swing.GroupLayout cardPanel1Layout = new javax.swing.GroupLayout(cardPanel1);
+        cardPanel1.setLayout(cardPanel1Layout);
+        cardPanel1Layout.setHorizontalGroup(
+            cardPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1100, Short.MAX_VALUE)
+        );
+        cardPanel1Layout.setVerticalGroup(
+            cardPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+        );
+
+        jScrollPane3.setViewportView(cardPanel1);
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1108, Short.MAX_VALUE)
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 62, Short.MAX_VALUE))
+        );
+
+        tabPaneLostFound.addTab("Found Items", jPanel13);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(tabPaneLostFound)
+                .addContainerGap())
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(tabPaneLostFound)))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
 
         getAccessibleContext().setAccessibleName("frame3");
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        ItemDisplay display = new ItemDisplay();
-        if (!display.checkUserLogin(this)) {
-            return;
-        }
-        r.setVisible(true);
-        r.setDefaultCloseOperation(user.ItemReport.DISPOSE_ON_CLOSE); // ✅ Only closes this window
-
-    }//GEN-LAST:event_jLabel1MouseClicked
 
     private void studentNumFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentNumFieldActionPerformed
         // TODO add your handling code here:
@@ -431,7 +586,9 @@ public final class ItemDisplay extends javax.swing.JFrame {
         if (errors.length() > 0) {
             JOptionPane.showMessageDialog(null, errors.toString(), "Validation Errors", JOptionPane.ERROR_MESSAGE);
         } else {
+
             try (Connection conn = DBConnection.DataBase.getConnection()) {
+//                String getItemReport = "SELECT *, 'Reported' AS source FROM itemreport WHERE  UNION ALL SELECT *, 'Found' AS source FROM itemfound";
                 String getUserQuery = "SELECT * FROM users_tbl WHERE schoolID = ?";
                 PreparedStatement pstUser = conn.prepareStatement(getUserQuery);
                 pstUser.setString(1, studentNumField.getText());
@@ -439,35 +596,79 @@ public final class ItemDisplay extends javax.swing.JFrame {
 
                 if (rst.next()) {
                     String firstName = rst.getString("firstName") + " " + rst.getString("lastName");
-                    String lastName = rst.getString("lastName");
                     String yearSec = rst.getString("yearSec");
                     String studentNumber = rst.getString("schoolID");
                     String email = rst.getString("email");
                     String phone = rst.getString("phone");
 
-                    if (studentNumber.equals(studentNumField.getText())) {
+                    if (studentNumber.equals(studentNumField.getText()) && tabPaneLostFound.getSelectedIndex() == 1) {
 
                         String insertQuery = "INSERT INTO claims_tbl (fullName, yearSec, studentNumber, email, phone, inquiry, proofImage, claimId, status_claim, userId, whoClaim) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                         PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
-                        pstInsert.setString(1, firstName + " " + lastName);
+                        pstInsert.setString(1, firstName);
                         pstInsert.setString(2, yearSec);
                         pstInsert.setString(3, studentNumber);
                         pstInsert.setString(4, email);
                         pstInsert.setString(5, phone);
                         pstInsert.setString(6, inquiryArea.getText());
+                        if (image == null || image[0] == null) {
+                            JOptionPane.showMessageDialog(null, "Proof image is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
                         pstInsert.setBytes(7, image[0]);
                         pstInsert.setInt(8, itemId);
                         pstInsert.setString(9, "Claim Pending");
                         pstInsert.setInt(10, userId);
                         pstInsert.setInt(11, rst.getInt("id"));
                         pstInsert.executeUpdate();
-                        
+
+                        String insertQuerys = "UPDATE itemfound SET status=? WHERE id=? AND status='Posted'";
+                        PreparedStatement pstInserts = conn.prepareStatement(insertQuerys);
+                        pstInserts.setString(1, "Claim Pending");
+                        pstInserts.setInt(2, itemId);
+                        pstInserts.executeUpdate();
+
+                        System.out.println(itemId);
+
+                        JOptionPane.showMessageDialog(null, "Claim submitted successfully.");
+                        jDialog1.dispose();
+                    } else if (studentNumber.equals(studentNumField.getText()) && tabPaneLostFound.getSelectedIndex() == 0) {
+                        String checkQuery = "SELECT id FROM itemreport WHERE id = ?";
+                        PreparedStatement checkStmt = conn.prepareStatement(checkQuery);
+                        checkStmt.setInt(1, itemId);
+                        ResultSet rsCheck = checkStmt.executeQuery();
+
+                        if (!rsCheck.next()) {
+                            JOptionPane.showMessageDialog(null, "Invalid claimId: No matching report found.", "Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        String insertQuery = "INSERT INTO claimsLost_tbl (fullName, yearSec, studentNumber, email, phone, inquiry, proofImage, claimId, status_claim, userId, whoClaim) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        PreparedStatement pstInsert = conn.prepareStatement(insertQuery);
+                        pstInsert.setString(1, firstName);
+                        pstInsert.setString(2, yearSec);
+                        pstInsert.setString(3, studentNumber);
+                        pstInsert.setString(4, email);
+                        pstInsert.setString(5, phone);
+                        pstInsert.setString(6, inquiryArea.getText());
+                        if (image == null || image[0] == null) {
+                            JOptionPane.showMessageDialog(null, "Proof image is required.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+                        pstInsert.setBytes(7, image[0]);
+                        pstInsert.setInt(8, itemId);
+                        pstInsert.setString(9, "Claim Pending");
+                        pstInsert.setInt(10, userId);
+                        pstInsert.setInt(11, rst.getInt("id"));
+                        pstInsert.executeUpdate();
+
                         String insertQuerys = "UPDATE itemreport SET status=? WHERE id=? AND status='Posted'";
                         PreparedStatement pstInserts = conn.prepareStatement(insertQuerys);
                         pstInserts.setString(1, "Claim Pending");
                         pstInserts.setInt(2, itemId);
                         pstInserts.executeUpdate();
-                        
+
                         System.out.println(itemId);
 
                         JOptionPane.showMessageDialog(null, "Claim submitted successfully.");
@@ -479,6 +680,7 @@ public final class ItemDisplay extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "User information not found.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(ClaimItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
@@ -504,21 +706,103 @@ public final class ItemDisplay extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_fileLabelMouseClicked
+    
+      private void componentShown(){
+        if (Session.userId != null && Session.userSchoolId != null) {
+            try (Connection conn = DBConnection.DataBase.getConnection()) {
+                String getUserQuery = "SELECT * FROM users_tbl WHERE id = ?";
+                PreparedStatement pstUser = conn.prepareStatement(getUserQuery);
+                pstUser.setInt(1, Session.userId);
+                ResultSet rs = pstUser.executeQuery();
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        new ClaimItem().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
+                if (rs.next()) {
+                    byte[] imgBytes = rs.getBytes("profile");
+                    if (imgBytes != null) {
+                        Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
+                       Image scaledImg = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                        Image circleImg = makeRoundedCorner(scaledImg, 60, 60);
+                        profile.setIcon(new ImageIcon(circleImg));
+                    } else {
+                        URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+                        if (iconPath != null) {
+                            profile.setIcon(new ImageIcon(iconPath));
+                        } else {
+                            System.err.println("Default icon not found.");
+                        }
+                    }
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+                    // Update this with the actual column names
+                    fname1.setText(rs.getString("lastName") + ", " + rs.getString("firstName"));
+                }
+
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(ClaimItem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+            if (iconPath != null) {
+                profile.setIcon(new ImageIcon(iconPath));
+            }
+            fname1.setText("");
+        }
+    }
+    
+    private Image makeRoundedCorner(Image image, int width, int height) {
+    BufferedImage rounded = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = rounded.createGraphics();
+
+    // Enable anti-aliasing
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // Create a circular clip
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+
+    // Draw the original image inside the circle
+    g2.drawImage(image, 0, 0, width, height, null);
+
+    g2.dispose();
+    return rounded;
+}
+    
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+        Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+      
+    }//GEN-LAST:event_profileMouseClicked
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
         new PendingReportItem().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jLabel9MouseClicked
+    }//GEN-LAST:event_jLabel27MouseClicked
 
-    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        new Profile().setVisible(true);
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        new ClaimItem().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jLabel10MouseClicked
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        new ItemReport().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void jLabel20MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel20MouseEntered
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        componentShown();
+    }//GEN-LAST:event_formComponentShown
 
     public static void isLogin() {
         if (user.Session.currentUsername == null) {
@@ -531,7 +815,10 @@ public final class ItemDisplay extends javax.swing.JFrame {
     }
 
     public void displayItemCards() {
-        String query = "SELECT * FROM itemreport WHERE status = 'Posted' AND reportId != ?";
+        
+
+        String query = "SELECT *, 'lost' AS type FROM itemreport WHERE status = 'Posted' AND reportId != ?";
+        displayAllItemsWithFilter(jScrollPane1, "lost");
 
         JPanel newCardPanel = new JPanel(new Table.wrapLayout(FlowLayout.LEFT, 15, 15)) {
             @Override
@@ -549,16 +836,16 @@ public final class ItemDisplay extends javax.swing.JFrame {
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
 
         try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
-            if (Session.userId != null){
-                  ps.setInt(1, Session.userId);
+            if (Session.userId != null) {
+                ps.setInt(1, Session.userId);
             } else {
-                  ps.setInt(1, -1);
+                ps.setInt(1, -1);
             }
-          
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                JPanel card = createCard(rs);
+                JPanel card = createCard(rs, this);
                 newCardPanel.add(card);
             }
 
@@ -575,21 +862,53 @@ public final class ItemDisplay extends javax.swing.JFrame {
         }
     }
 
-    Image getScaledImage(Image srcImg, int width, int height) {
-        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = resizedImg.createGraphics();
+    public void displayItemCardsFound() {
+        String query = "SELECT *, 'found' AS type FROM itemfound WHERE status = 'Posted' AND reportId != ?";
+        
+        displayAllItemsWithFilter(jScrollPane3, "found");
+        JPanel newCardPanel = new JPanel(new Table.wrapLayout(FlowLayout.LEFT, 15, 15)) {
+            @Override
+            public Dimension getPreferredSize() {
+                if (getParent() instanceof JViewport) {
+                    int width = ((JViewport) getParent()).getWidth();
+                    setSize(width, 0);
+                }
+                return super.getPreferredSize();
+            }
+        };
 
-        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        newCardPanel.setBackground(Color.white);
+        jScrollPane3.setViewportView(newCardPanel);
+        jScrollPane3.getVerticalScrollBar().setUnitIncrement(16);
 
-        g2.drawImage(srcImg, 0, 0, width, height, null);
-        g2.dispose();
+        try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            if (Session.userId != null) {
+                ps.setInt(1, Session.userId);
+            } else {
+                ps.setInt(1, -1);
+            }
 
-        return resizedImg;
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                JPanel card = createCard(rs, this);
+                newCardPanel.add(card);
+            }
+
+            jScrollPane3.getViewport().addComponentListener(new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    newCardPanel.revalidate();
+                    newCardPanel.repaint();
+                }
+            });
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
+        }
     }
 
-    private JPanel createCard(ResultSet rs) throws Exception {
+    private JPanel createCard(ResultSet rs, ItemDisplay id) throws Exception {
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS)); // Allows scroll pane to fill the card
         card.setBackground(Color.WHITE);
@@ -634,8 +953,8 @@ public final class ItemDisplay extends javax.swing.JFrame {
         infos.setBackground(Color.WHITE);
         Font font = new Font("Segoe UI Variable", Font.PLAIN, 14);
 
-        userId = rs.getInt("reportId");
         itemId = rs.getInt("id");
+
         JLabel nameLabel = new JLabel(rs.getString("itemName"));
         nameLabel.setMinimumSize(new Dimension(width, (height + 10)));
         nameLabel.setPreferredSize(new Dimension(width, (height + 10)));
@@ -643,7 +962,6 @@ public final class ItemDisplay extends javax.swing.JFrame {
         nameLabel.setFont(new Font("Segoe UI Variable", Font.BOLD, 16));
         infos.add(nameLabel);
         infos.add(Box.createRigidArea(new Dimension(0, 20)));
-
         JLabel locationLabel = new JLabel("Location: " + rs.getString("location"));
         locationLabel.setMinimumSize(new Dimension(width, height));
         locationLabel.setPreferredSize(new Dimension(width, height));
@@ -678,8 +996,8 @@ public final class ItemDisplay extends javax.swing.JFrame {
 
         JPanel btnPanel = new JPanel();
         btnPanel.setBackground(Color.WHITE);
-
-        JButton claimBtn = new JButton("Claim");
+        String jlbl = "found".equals(rs.getString("type")) ? "Claim" : "Found this item";
+        JButton claimBtn = new JButton(jlbl);
         claimBtn.setBorder(new Table.RoundedBorder(10));
         claimBtn.setBackground(new Color(0, 0, 204)); // nice blue
         claimBtn.setForeground(Color.WHITE);
@@ -687,20 +1005,18 @@ public final class ItemDisplay extends javax.swing.JFrame {
         // optional: size
         claimBtn.setPreferredSize(new Dimension(240, 40));
         btnPanel.add(claimBtn);
-
+        int ids = rs.getInt("id");
+        int uId = rs.getInt("reportId");
         String itemName = rs.getString("itemName");
-
+        String jlbls = "found".equals(rs.getString("type")) ? "Claim Item" : "Found item";
         claimBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (!checkUserLogin(new ItemDisplay())) {
-                    dispose();
-                    return; // block if not logged in
+                if (checkUserLogin(id)) {
+                    // block if not logged in
+                    openDialog(jlbls, itemName, id, ids, uId);
+
                 }
-                jDialog1.setTitle("Claim Item: " + itemName);
-                jDialog1.setVisible(true);
-                jDialog1.pack();
-                jDialog1.setLocationRelativeTo(new ItemDisplay());
             }
 
             @Override
@@ -732,9 +1048,207 @@ public final class ItemDisplay extends javax.swing.JFrame {
         return card;
 
     }
+    
+//    private void loadLostCards(JPanel newCardPanel, String selectedCategory) {
+//    newCardPanel.removeAll();
+//    String query = "SELECT *, 'lost' AS type FROM itemreport WHERE status = 'Posted' AND reportId != ?";
+//    if (!"All".equals(selectedCategory)) {
+//        query += " AND category = ?";
+//    }
+//
+//    try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+//        ps.setInt(1, Session.userId != null ? Session.userId : -1);
+//        if (!"All".equals(selectedCategory)) {
+//            ps.setString(2, selectedCategory);
+//        }
+//
+//        ResultSet rs = ps.executeQuery();
+//        while (rs.next()) {
+//            JPanel card = createCard(rs, this);
+//            newCardPanel.add(card);
+//        }
+//
+//        newCardPanel.revalidate();
+//        newCardPanel.repaint();
+//
+//    } catch (Exception e) {
+//        JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
+//    }
+//}
+
+
+   public void displayAllItemsWithFilter(JScrollPane scrollPane, String itemType) {
+    String[] categories = {
+        "All",
+        "Personal Items (Accessories)",
+        "Electronics (Cellphone)",
+        "Stationery & School Supplies",
+        "Sports Equipment",
+        "Miscellaneous (Umbrella)",
+        "Others"
+    };
+
+    // Create top panel with category filter and search bar
+    JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    JComboBox<String> categoryFilter = new JComboBox<>(categories);
+    categoryFilter.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
+    topPanel.add(new JLabel("Filter by Category: "));
+    topPanel.add(categoryFilter);
+    
+    // Time filter dropdown
+    String[] timeFilterOptions = {"Any", "Recently", "Last 24 hours", "Last 7 days"};
+    JComboBox<String> timeFilter = new JComboBox<>(timeFilterOptions);
+    topPanel.add(new JLabel("Filter by Time: "));
+    topPanel.add(timeFilter);
+
+    // Create search bar
+    JTextField searchField = new JTextField(20);
+    searchField.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
+    topPanel.add(new JLabel("Search: "));
+    topPanel.add(searchField);
+   
+    topPanel.setBackground(Color.WHITE);
+
+    // Create the card panel
+    JPanel cardPanel = new JPanel(new Table.wrapLayout(FlowLayout.LEFT, 15, 15)) {
+        @Override
+        public Dimension getPreferredSize() {
+            if (getParent() instanceof JViewport) {
+                int width = ((JViewport) getParent()).getWidth();
+                setSize(width, 0);
+            }
+            return super.getPreferredSize();
+        }
+    };
+
+    cardPanel.setBackground(Color.WHITE);
+    // Combine topPanel and cardPanel into one vertical panel
+    JPanel contentPanel = new JPanel();
+    contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+    contentPanel.setBackground(Color.WHITE);
+    contentPanel.add(topPanel);
+    contentPanel.add(cardPanel);
+
+    scrollPane.setViewportView(contentPanel);
+    scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+    // Function to load data with filtering
+    Runnable loadData = () -> {
+        cardPanel.removeAll();
+
+        String selectedCategory = (String) categoryFilter.getSelectedItem();
+        String searchQuery = searchField.getText().trim();
+        String selectedTimeFilter = (String) timeFilter.getSelectedItem();
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append(String.format(
+                "SELECT *, '%s' AS type FROM %s WHERE status = 'Posted' AND reportId != ?",
+                itemType,
+                itemType.equals("lost") ? "itemreport" : "itemfound"));
+
+        // Category filter
+        if (!selectedCategory.equals("All")) {
+            queryBuilder.append(" AND category = ?");
+        }
+
+        // Search filter
+        if (!searchQuery.isEmpty()) {
+            queryBuilder.append(" AND (itemName LIKE ? OR description LIKE ? OR location LIKE ? OR name LIKE ? OR studentNum LIKE ? OR yearsec LIKE ?)");
+        }
+
+        // Time filter (recently, last 24 hours, last 7 days)
+        if (!selectedTimeFilter.equals("Any")) {
+            String timeCondition = "";
+            switch (selectedTimeFilter) {
+                case "Recently":
+                    timeCondition = " AND timestamp >= NOW() - INTERVAL 1 DAY";
+                    break;
+                case "Last 24 hours":
+                    timeCondition = " AND timestamp >= NOW() - INTERVAL 1 DAY";
+                    break;
+                case "Last 7 days":
+                    timeCondition = " AND timestamp >= NOW() - INTERVAL 7 DAY";
+                    break;
+            }
+            queryBuilder.append(timeCondition);
+        }
+
+        // Build the full query
+        String query = queryBuilder.toString();
+
+        try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, Session.userId != null ? Session.userId : -1);
+
+            int paramIndex = 2;
+            if (!selectedCategory.equals("All")) {
+                ps.setString(paramIndex++, selectedCategory);
+            }
+
+            // Set search query parameters
+            if (!searchQuery.isEmpty()) {
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // itemName
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // description
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // location
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // name
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // studentNum
+                ps.setString(paramIndex++, "%" + searchQuery + "%"); // yearsec
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                JPanel card = createCard(rs, this);
+                cardPanel.add(card);
+            }
+
+            cardPanel.revalidate();
+            cardPanel.repaint();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
+        }
+    };
+
+    // Initial load
+    loadData.run();
+
+    // Reload on filter change
+    categoryFilter.addActionListener(e -> loadData.run());
+    searchField.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            loadData.run();
+        }
+    });
+    timeFilter.addActionListener(e -> loadData.run());
+}
+
+
+
+    Image getScaledImage(Image srcImg, int width, int height) {
+        BufferedImage resizedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = resizedImg.createGraphics();
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2.drawImage(srcImg, 0, 0, width, height, null);
+        g2.dispose();
+
+        return resizedImg;
+    }
+
+    private void openDialog(String jlbls, String itemName, JFrame id, int ids, int uId) {
+        jDialog1.setTitle(jlbls + ": " + itemName);
+        jDialog1.setVisible(true);
+        jDialog1.pack();
+        jDialog1.setLocationRelativeTo(id);
+        itemId = ids;
+        userId = uId;
+        System.out.println(ids + ", " + uId);
+    }
 
     public boolean checkUserLogin(JFrame parentFrame) {
-        if (Session.currentUsername == null) { // or !Session.isLoggedIn if you have a flag
+        if (Session.currentUsername == null) {
             int choice = JOptionPane.showConfirmDialog(
                     parentFrame,
                     "You are not logged in. Do you want to login first?",
@@ -744,14 +1258,16 @@ public final class ItemDisplay extends javax.swing.JFrame {
             );
 
             if (choice == JOptionPane.YES_OPTION) {
-                parentFrame.dispose(); // Close current frame if needed
+                parentFrame.dispose(); // Only close if they choose to log in
                 new userAuth.Login().setVisible(true);
+                return false; // Allow continuing if logged in
+            } else if (choice == JOptionPane.NO_OPTION || choice == JOptionPane.CLOSED_OPTION) {
+
+                return false; // Block further action
             }
-
-            return false;
         }
-
         return true;
+
     }
 
     public String getTimeAgo(Timestamp past) {
@@ -816,29 +1332,39 @@ public final class ItemDisplay extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardPanel;
+    private javax.swing.JPanel cardPanel1;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JLabel fileName;
+    private javax.swing.JLabel fname1;
     private javax.swing.JTextArea inquiryArea;
     private javax.swing.JButton jButton3;
     private javax.swing.JDialog jDialog1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel profile;
     private javax.swing.JTextField studentNumField;
+    private javax.swing.JTabbedPane tabPaneLostFound;
     // End of variables declaration//GEN-END:variables
 }

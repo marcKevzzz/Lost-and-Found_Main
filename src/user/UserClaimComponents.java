@@ -5,8 +5,13 @@
 package user;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -41,6 +46,7 @@ public class UserClaimComponents extends javax.swing.JPanel {
         g3 = new javax.swing.JTextField();
         g2 = new javax.swing.JTextField();
         g1 = new javax.swing.JTextField();
+        jDialog1 = new javax.swing.JDialog();
         t1 = new javax.swing.JLabel();
         t2 = new javax.swing.JLabel();
         t3 = new javax.swing.JLabel();
@@ -50,6 +56,8 @@ public class UserClaimComponents extends javax.swing.JPanel {
         reject1 = new javax.swing.JButton();
         t6 = new javax.swing.JLabel();
         t7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        t8 = new javax.swing.JLabel();
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(1190, 68));
@@ -144,10 +152,21 @@ public class UserClaimComponents extends javax.swing.JPanel {
                 .addContainerGap(15, Short.MAX_VALUE))
         );
 
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(3090, 67));
-        setMinimumSize(new java.awt.Dimension(1190, 67));
-        setPreferredSize(new java.awt.Dimension(1190, 67));
+        setMaximumSize(new java.awt.Dimension(1090, 67));
+        setMinimumSize(new java.awt.Dimension(1090, 67));
+        setPreferredSize(new java.awt.Dimension(1090, 67));
 
         t1.setBackground(new java.awt.Color(255, 255, 255));
         t1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -185,10 +204,22 @@ public class UserClaimComponents extends javax.swing.JPanel {
         t6.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         t6.setForeground(new java.awt.Color(102, 102, 102));
         t6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        t6.setText(".");
+        t6.setText("/");
 
         t7.setBackground(new java.awt.Color(255, 255, 255));
         t7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        jButton1.setText("...");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        t8.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        t8.setForeground(new java.awt.Color(102, 102, 102));
+        t8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        t8.setText("/");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -196,32 +227,37 @@ public class UserClaimComponents extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(t1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t2, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t3, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t4, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t5, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(t7, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                .addGap(148, 148, 148)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(t6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(9, 9, 9))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(accept1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(reject1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(t2, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(t3, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(t4, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(t5, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(t7, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(accept1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(reject1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(t8, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(t6, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(t6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(t6, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t8, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(t4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -230,150 +266,196 @@ public class UserClaimComponents extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(accept1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(reject1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(t7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(t1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(t5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(t5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(t7, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void accept1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept1ActionPerformed
-        String decision = "Claimed";
-        try (Connection con = DBConnection.DataBase.getConnection()) {
-            String update = "UPDATE itemreport SET status = ? WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(update);
-            ps.setString(1, decision);
-            ps.setInt(2, claimId);
-            
-            String updateClaim = "UPDATE claims_tbl SET status_claim = ? WHERE claimId = ?";
-            PreparedStatement pst = con.prepareStatement(updateClaim);
-            pst.setString(1, decision);
-            pst.setInt(2, claimId);
-            pst.executeUpdate();
-            
-            int result = ps.executeUpdate();
-            if (result > 0) {
-                JOptionPane.showMessageDialog(this, "Confirmed Claimed");
-                accept1.setText("Claimed");
-                accept1.setEnabled(false);
-                accept1.setBorderPainted(false);
-                accept1.setContentAreaFilled(false);
-                reject1.setVisible(false);
-                repaint();
-                revalidate();
-            }
-        } catch (Exception ex) {
-        }
-    }//GEN-LAST:event_accept1ActionPerformed
-
-    private void reject1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reject1ActionPerformed
-         String decision = "Cancel Claimed";
-        try (Connection con = DBConnection.DataBase.getConnection()) {
-            String update = "UPDATE itemreport SET status = ? WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(update);
-            
-            ps.setString(1, decision);
-            ps.setInt(2, claimId);
-            
-            int results = ps.executeUpdate();
-            if (results > 0 ) {
-                JOptionPane.showMessageDialog(this, "Confirmed");
-                accept1.setText("Cancelled");
-                accept1.setEnabled(false);
-                accept1.setBorderPainted(false);
-                accept1.setContentAreaFilled(false);
-                reject1.setVisible(false);
-                repaint();
-                revalidate();
-            }
-
-        } catch (Exception ex) {
-             ex.printStackTrace();
-        }
-    }//GEN-LAST:event_reject1ActionPerformed
-
     private void accept2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept2ActionPerformed
 
-        String decision = "Claim Approved";
-        try (Connection con = DBConnection.DataBase.getConnection()) {
-            String updateClaim = "UPDATE itemreport SET name=?, studentNum=?, yearSec=?, email=?, phone=? status=? WHERE id=?";
-            PreparedStatement ps = con.prepareStatement(updateClaim);
-            
 
-            ps.setString(1, g1.getText());
-            ps.setString(2, g2.getText());
-            ps.setString(3, g3.getText());
-            ps.setString(4, g4.getText());
-            ps.setString(5, g5.getText());
-            ps.setString(6, decision);
-            ps.setInt(7, claimId1);
-            
-            int result = ps.executeUpdate();
-
-            String updates = "UPDATE claims_tbl SET retrievalInfo=?, status_claim=?, timestamp=CURRENT_TIMESTAMP WHERE claimid = ?";
-            PreparedStatement pst = con.prepareStatement(updates);
-            if (g6.getText().equals("(Optional)")) {
-                pst.setString(1, g6.getText());
-            } else {
-                pst.setString(1, null);
-            }
-            pst.setString(2, decision);
-            pst.setInt(3, claimId1);
-            int results = pst.executeUpdate();
-            if (results > 0 && result > 0) {
-                JOptionPane.showMessageDialog(this, "Confirmed");
-            }
-
-        } catch (Exception ex) {
-             ex.printStackTrace();
-        }
     }//GEN-LAST:event_accept2ActionPerformed
 
     private void g4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_g4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_g4ActionPerformed
 
-    private int claimId;
-    private int claimId1;
+    private void reject1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reject1ActionPerformed
+        String decision = "Cancel Claimed";
 
-    
+        try (Connection con = DBConnection.DataBase.getConnection()) {
+            String updateQuery;
+
+            if (index == 1) {
+                updateQuery = "UPDATE itemfound SET status = ? WHERE id = ?";
+            } else {
+                updateQuery = "UPDATE itemreport SET status = ? WHERE id = ?";
+            }
+
+            PreparedStatement ps = con.prepareStatement(updateQuery);
+
+            ps.setString(1, decision);
+            ps.setInt(2, claimId);
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                JOptionPane.showMessageDialog(this, "Claim has been successfully cancelled.");
+
+                accept1.setText("Cancelled");
+                accept1.setEnabled(false);
+                accept1.setBorderPainted(false);
+                accept1.setContentAreaFilled(false);
+                reject1.setVisible(false);
+
+                repaint();
+                revalidate();
+            } else {
+                JOptionPane.showMessageDialog(this, "No claim record was updated.", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+
+    }//GEN-LAST:event_reject1ActionPerformed
+
+    private void accept1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept1ActionPerformed
+        String decision = "Claimed";
+
+        try (Connection con = DBConnection.DataBase.getConnection()) {
+            int itemResult = 0;
+            int claimResult = 0;
+
+            if (index == 1) {
+                // Found Items Path
+                String updateItem = "UPDATE itemfound SET status = ? WHERE id = ?";
+                PreparedStatement ps = con.prepareStatement(updateItem);
+                ps.setString(1, decision);
+                ps.setInt(2, claimId);
+                itemResult = ps.executeUpdate();
+
+                String updateClaim = "UPDATE claims_tbl SET status_claim = ? WHERE claimId = ?";
+                PreparedStatement pst = con.prepareStatement(updateClaim);
+                pst.setString(1, decision);
+                pst.setInt(2, claimId);
+                claimResult = pst.executeUpdate();
+            } else {
+                // Lost Items Path
+                String updateItem = "UPDATE itemreport SET status = ? WHERE id = ?";
+                PreparedStatement ps = con.prepareStatement(updateItem);
+                ps.setString(1, decision);
+                ps.setInt(2, claimId);
+                itemResult = ps.executeUpdate();
+
+                String updateClaim = "UPDATE claimsLost_tbl SET status_claim = ? WHERE claimId = ?";
+                PreparedStatement pst = con.prepareStatement(updateClaim);
+                pst.setString(1, decision);
+                pst.setInt(2, claimId);
+                claimResult = pst.executeUpdate();
+            }
+
+            if (itemResult > 0 && claimResult > 0) {
+                JOptionPane.showMessageDialog(this, "Confirmed Claimed");
+
+                accept1.setText("Claimed");
+                accept1.setEnabled(false);
+                accept1.setBorderPainted(false);
+                accept1.setContentAreaFilled(false);
+                reject1.setVisible(false);
+
+                repaint();
+                revalidate();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to update both records.", "Update Failed", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_accept1ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try (Connection con = DBConnection.DataBase.getConnection()) {
+            String query;
+
+            if (index == 1) {
+                query = "SELECT * FROM itemfound WHERE id = ?";
+            } else {
+                query = "SELECT * FROM itemreport WHERE id = ?";
+            }
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, claimId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                byte[] imgBytes = rs.getBytes("imageAttach");
+                ImageIcon icon = new ImageIcon(imgBytes);
+
+                String description = rs.getString("description");
+
+                ItemInfo ii = new ItemInfo(icon, description);
+
+                jDialog1.setContentPane(ii);
+                jDialog1.pack();
+                jDialog1.setLocation(
+                    (Toolkit.getDefaultToolkit().getScreenSize().width) / 2 - getWidth() / 2,
+                    (Toolkit.getDefaultToolkit().getScreenSize().height) / 2 - getHeight() / 2
+                );
+                jDialog1.setVisible(true);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private int claimId;
+    private int index;
+
 //    //Main Panel
-    
     public void setClaimInfo(String fullName, String studentNum,
-        String yearSec, String email, String phone, String timestamp, String inq, String status, int claimId) {
+            String yearSec, String email, String phone, String timestamp, String inq, String status, int claimId, int index) {
         this.claimId = claimId;
+        this.index = index;
+        String a = index == 0? "Lost":"Found"; 
         t1.setText(fullName);
         t2.setText(studentNum);
         t3.setText(yearSec);
         t4.setText(email);
         t5.setText(phone);
         t6.setText(timestamp);
+        t8.setText(a);
 
         if (inq == null || inq.isEmpty()) {
             t7.setText("(Optional)");
         } else {
             t7.setText(inq);
         }
-        if (status.equalsIgnoreCase("Claimed")){
+        if (status.equalsIgnoreCase("Claimed")) {
             accept1.setText("Claimed");
             accept1.setEnabled(false);
             accept1.setBorderPainted(false);
             accept1.setContentAreaFilled(false);
             reject1.setVisible(false);
-        
+
         } else if (status.equalsIgnoreCase("Cancel Claimed")) {
             accept1.setText("Cancelled");
-                accept1.setEnabled(false);
-                accept1.setBorderPainted(false);
-                accept1.setContentAreaFilled(false);
-                reject1.setVisible(false);
-               
-        }
-         repaint();
-                revalidate();
-    }
+            accept1.setEnabled(false);
+            accept1.setBorderPainted(false);
+            accept1.setContentAreaFilled(false);
+            reject1.setVisible(false);
 
-    
+        }
+        repaint();
+        revalidate();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -386,6 +468,8 @@ public class UserClaimComponents extends javax.swing.JPanel {
     private javax.swing.JTextField g5;
     private javax.swing.JTextField g6;
     private javax.swing.JLabel g7;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton reject1;
     private javax.swing.JLabel t1;
@@ -395,5 +479,6 @@ public class UserClaimComponents extends javax.swing.JPanel {
     private javax.swing.JLabel t5;
     private javax.swing.JLabel t6;
     private javax.swing.JLabel t7;
+    private javax.swing.JLabel t8;
     // End of variables declaration//GEN-END:variables
 }

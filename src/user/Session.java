@@ -4,6 +4,8 @@
  */
 package user;
 
+import javax.swing.Icon;
+
 /**
  *
  * @author QCU
@@ -12,6 +14,6 @@ public class Session {
     public static String currentUsername = null;
     public static String userSchoolId = null;
     public static Integer userId = null;
-    
+    public static Icon profilePic = null;
 }
 

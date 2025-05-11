@@ -19,12 +19,21 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -41,7 +50,7 @@ import javax.swing.JViewport;
  *
  * @author QCU
  */
-public class PendingReportItem extends javax.swing.JFrame {
+public final class PendingReportItem extends javax.swing.JFrame {
 
     /**
      * Creates new form PendingReportItem
@@ -57,6 +66,7 @@ public class PendingReportItem extends javax.swing.JFrame {
 
             }
         });
+//        ClaimItem ci = new ClaimItem();
     }
     user.ItemReport r = new user.ItemReport();
     int itemId;
@@ -71,193 +81,252 @@ public class PendingReportItem extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cardPanel = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
+        fname1 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMinimumSize(new java.awt.Dimension(700, 500));
         jPanel1.setPreferredSize(new java.awt.Dimension(1300, 700));
-
-        jPanel6.setBackground(new java.awt.Color(0, 0, 204));
-        jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
-        jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
-
-        jPanel7.setOpaque(false);
-        jPanel7.setPreferredSize(new java.awt.Dimension(70, 60));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("QCU");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addContainerGap())
-        );
-
-        jPanel8.setBackground(new java.awt.Color(0, 51, 255));
-        jPanel8.setMinimumSize(new java.awt.Dimension(32, 20));
-        jPanel8.setOpaque(false);
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jLabel7.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Found Item ");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel8.add(jLabel7, java.awt.BorderLayout.CENTER);
-
-        jLabel8.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Claim Item");
-        jLabel8.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
-            }
-        });
-
-        jLabel9.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Profile");
-        jLabel9.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
-            }
-        });
-
-        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
-        jPanel9.setMinimumSize(new java.awt.Dimension(32, 20));
-
-        jLabel10.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Pending Report");
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(100, 100));
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("<html><body style='margin-left: 10px;'><a href='#'> Report Item</a></body></html>");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel2.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setFocusable(false);
         jScrollPane1.setMinimumSize(new java.awt.Dimension(50, 50));
-        jScrollPane1.setOpaque(false);
 
         cardPanel.setBackground(new java.awt.Color(255, 255, 255));
         cardPanel.setMinimumSize(new java.awt.Dimension(100, 100));
         cardPanel.setOpaque(false);
+        cardPanel.setPreferredSize(new java.awt.Dimension(1302, 645));
 
         javax.swing.GroupLayout cardPanelLayout = new javax.swing.GroupLayout(cardPanel);
         cardPanel.setLayout(cardPanelLayout);
         cardPanelLayout.setHorizontalGroup(
             cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1212, Short.MAX_VALUE)
+            .addGap(0, 1302, Short.MAX_VALUE)
         );
         cardPanelLayout.setVerticalGroup(
             cardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
+            .addGap(0, 645, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(cardPanel);
+
+        jPanel7.setBackground(new java.awt.Color(0, 39, 117));
+        jPanel7.setForeground(new java.awt.Color(51, 51, 51));
+        jPanel7.setMinimumSize(new java.awt.Dimension(310, 70));
+        jPanel7.setPreferredSize(new java.awt.Dimension(1310, 70));
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-logo.png"))); // NOI18N
+
+        jLabel22.setBackground(new java.awt.Color(0, 51, 153));
+        jLabel22.setFont(new java.awt.Font("Segoe UI Symbol", 1, 24)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setText("Lost and Found");
+
+        profile.setBackground(new java.awt.Color(255, 0, 0));
+        profile.setFont(new java.awt.Font("Segoe UI Variable", 0, 16)); // NOI18N
+        profile.setForeground(new java.awt.Color(255, 255, 255));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-4-32.png"))); // NOI18N
+        profile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+
+        fname1.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        fname1.setForeground(new java.awt.Color(255, 255, 255));
+        fname1.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(599, 599, 599)
+                .addComponent(fname1, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                    .addComponent(profile, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(8, 8, 8))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(fname1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
+        );
+
+        jPanel6.setBackground(new java.awt.Color(0, 51, 153));
+        jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
+        jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel8.setBackground(new java.awt.Color(0, 51, 255));
+        jPanel8.setMinimumSize(new java.awt.Dimension(32, 20));
+        jPanel8.setOpaque(false);
+        jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 105, -1, 35));
+
+        jPanel18.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel18.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 162, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 482, -1, -1));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel18.setText("  Lost and Found");
+        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, 35));
+
+        jLabel27.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel27.setText("  Pending Report");
+        jLabel27.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel27.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel27.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel27MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 150, 30));
+
+        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 34, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 160, -1));
+
+        jLabel21.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel21.setText("  Claim Item");
+        jLabel21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel21.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel21MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 35));
+
+        jLabel19.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel19.setText("  Report Item");
+        jLabel19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel19.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
+
+        jLabel20.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel20.setText("  Profile");
+        jLabel20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel20.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 140, 34));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 1300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(6, 6, 6))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 650, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 623, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -266,32 +335,101 @@ public class PendingReportItem extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        new ClaimItem().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        new Profile().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel9MouseClicked
-
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-
-//        r.setVisible(true);
-//        r.setDefaultCloseOperation(user.ItemReport.DISPOSE_ON_CLOSE); // ✅ Only closes this window
-    }//GEN-LAST:event_jLabel1MouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         new ItemDisplay().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
+
+    }//GEN-LAST:event_jLabel27MouseClicked
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        new ClaimItem().setVisible(true);
+        this.dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        new ItemReport().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+
+         Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_profileMouseClicked
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+               componentShown();
+
+    }//GEN-LAST:event_formComponentShown
 
     public void displayItemCards() {
         cardPanel.removeAll();
-        String query = "SELECT ir.*, ct.claimId, ct.whoclaim, ct.timestamp AS claim_timestamp FROM itemreport ir JOIN claims_tbl ct ON ct.claimId = ir.id WHERE (ir.reportId = ? AND ir.studentNum = ?) OR (ct.whoclaim = ? AND ct.studentNumber = ?)";
+        String query = "-- Items you REPORTED (FOUND)\n"
+                + "SELECT \n"
+                + "    ifd.*, ifd.timestamp AS report_timestamp,\n"
+                + "    ct.status_claim, \n"
+                + "    ct.claimId, \n"
+                + "    ct.whoclaim, \n"
+                + "    ct.timestamp AS claim_timestamp,\n"
+                + "    'found_reported' AS type\n"
+                + "FROM itemfound ifd\n"
+                + "LEFT JOIN claims_tbl ct ON ct.claimId = ifd.id\n"
+                + "WHERE ifd.reportId = ?\n"
+                + "\n"
+                + "UNION ALL\n"
+                + "\n"
+                + "-- Items you REPORTED (LOST)\n"
+                + "SELECT \n"
+                + "    ir.*, ir.timestamp AS report_timestamp,\n"
+                + "    cl.status_claim, \n"
+                + "    cl.claimId, \n"
+                + "    cl.whoclaim, \n"
+                + "    cl.timestamp AS claim_timestamp,\n"
+                + "    'lost_reported' AS type\n"
+                + "FROM itemreport ir\n"
+                + "LEFT JOIN claimsLost_tbl cl ON cl.claimId = ir.id\n"
+                + "WHERE ir.reportId = ?\n"
+                + "\n"
+                + "UNION ALL\n"
+                + "\n"
+                + "-- Items you CLAIMED (FOUND)\n"
+                + "SELECT \n"
+                + "    ifd.*, ifd.timestamp AS report_timestamp,\n"
+                + "    ct.status_claim, \n"
+                + "    ct.claimId, \n"
+                + "    ct.whoclaim, \n"
+                + "    ct.timestamp AS claim_timestamp,\n"
+                + "    'found_claimed' AS type\n"
+                + "FROM itemfound ifd\n"
+                + "JOIN claims_tbl ct ON ct.claimId = ifd.id\n"
+                + "WHERE ct.whoclaim = ?\n"
+                + "\n"
+                + "UNION ALL\n"
+                + "\n"
+                + "-- Items you CLAIMED (LOST)\n"
+                + "SELECT \n"
+                + "    ir.*, ir.timestamp AS report_timestamp,\n"
+                + "    cl.status_claim, \n"
+                + "    cl.claimId, \n"
+                + "    cl.whoclaim, \n"
+                + "    cl.timestamp AS claim_timestamp,\n"
+                + "    'lost_claimed' AS type\n"
+                + "FROM itemreport ir\n"
+                + "JOIN claimsLost_tbl cl ON cl.claimId = ir.id\n"
+                + "WHERE cl.whoclaim = ?";
+
         cardPanel.setLayout(new Table.wrapLayout(FlowLayout.LEFT, 15, 15));
-        cardPanel = new JPanel(cardPanel.getLayout()) {
+        JPanel newPanel = new JPanel(cardPanel.getLayout()) {
             @Override
             public Dimension getPreferredSize() {
                 if (getParent() instanceof JViewport) {
@@ -301,16 +439,17 @@ public class PendingReportItem extends javax.swing.JFrame {
                 return super.getPreferredSize();
             }
         };
-
+        cardPanel = newPanel;
         jScrollPane1.setViewportView(cardPanel);
         jScrollPane1.getVerticalScrollBar().setUnitIncrement(16);
+        cardPanel.setBackground(Color.white);
         if (Session.userId != null) {
             try (Connection con = DBConnection.DataBase.getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
 
-                ps.setInt(1, Session.userId);
-                ps.setString(2, Session.userSchoolId);
-                ps.setInt(3, Session.userId);
-                ps.setString(4, Session.userSchoolId);
+                ps.setInt(1, Session.userId); // whoclaim for found
+                ps.setInt(2, Session.userId); // reportId for found
+                ps.setInt(3, Session.userId); // whoclaim for lost
+                ps.setInt(4, Session.userId); // reportId for lost
 
                 ResultSet rs = ps.executeQuery();
 
@@ -326,26 +465,30 @@ public class PendingReportItem extends javax.swing.JFrame {
                         cardPanel.repaint();
                     }
                 });
-                cardPanel.setBackground(Color.white);
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error loading items: " + e.getMessage());
             }
         } else {
-            JLabel statusLbl = new JLabel("No Pending");
-            statusLbl.setFont(new Font("Segoe UI Variable", Font.BOLD, 20));
-            cardPanel.add(statusLbl);
+           
+                JLabel statusLbl = new JLabel("No items found or claimed.");
+                cardPanel.add(statusLbl);
         }
+        
 
     }
 
     private JPanel createCard(ResultSet rs) throws Exception {
         ItemDisplay id = new ItemDisplay();
-        String status1 = rs.getString("status");
-         Timestamp createdAt = rs.getTimestamp("claim_timestamp");
-        String timeAgo = id.getTimeAgo(createdAt);
-        int whoclaim = rs.getInt("whoclaim");
-        
+        String type = rs.getString("type"); // 'found' or 'lost'
+        String status = rs.getString("status");
+        Timestamp claimTimestamp = rs.getTimestamp("claim_timestamp");
+        Timestamp reportTimestamp = rs.getTimestamp("report_timestamp");
+
+        Timestamp displayTime = (claimTimestamp != null) ? claimTimestamp : reportTimestamp;
+        String timeAgo = (displayTime != null) ? id.getTimeAgo(displayTime) : "Unknown";
+        int whoClaim = rs.getInt("whoclaim");
+
         JPanel card = new JPanel();
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
         card.setBackground(Color.WHITE);
@@ -358,51 +501,78 @@ public class PendingReportItem extends javax.swing.JFrame {
         headPanel.setBackground(Color.white);
         headPanel.setMaximumSize(new Dimension(270, 20));
 
-        // Components
         JLabel stat = new JLabel();
         JLabel time = new JLabel(timeAgo);
 
-        if ((status1.equalsIgnoreCase("Claimed") 
-            || status1.equalsIgnoreCase("Claim Pending") 
-            || status1.equalsIgnoreCase("Claim Request") 
-            || status1.equalsIgnoreCase("Claim Approved")) 
-            && whoclaim == (int) Session.userId) {
+//        boolean isClaim = (status != null && (status.equalsIgnoreCase("Claimed")
+//                || status.equalsIgnoreCase("Claim Pending")
+//                || status.equalsIgnoreCase("Claim Request")
+//                || status.equalsIgnoreCase("Claim Approved"))) && whoClaim == Session.userId;
 
-            stat.setText("Claim");
-        } else {
-            stat.setText("Report");
+        String labelPrefix;
+        switch (type.toLowerCase()) {
+            case "found_reported" ->
+                labelPrefix = "Found Report";
+            case "lost_reported" ->
+                labelPrefix = "Lost Report";
+            case "found_claimed" ->
+                labelPrefix = "Found Claim";
+            case "lost_claimed" ->
+                labelPrefix = "Lost Claim";
+            default ->
+                labelPrefix = "Unknown";
         }
+        stat.setText(labelPrefix);
 
         stat.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
         time.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 12));
         time.setForeground(Color.gray);
 
-        // New: Add a flexible space between stat and time
         headPanel.add(stat);
-        headPanel.add(Box.createHorizontalGlue()); // pushes time to the right
+        headPanel.add(Box.createHorizontalGlue());
         headPanel.add(time);
-
         card.add(headPanel);
-        
-        JPanel status = new JPanel();
-        JLabel statusLbl = new JLabel(status1);
+
+        // Status panel
+        JPanel statusPanel = new JPanel();
+        JLabel statusLbl = new JLabel(status != null ? status : "Unknown");
         statusLbl.setFont(new Font("Segoe UI Variable", Font.BOLD, 16));
         statusLbl.setForeground(Color.white);
 
-        if (status1.equalsIgnoreCase("Pending")) {
-            status.setBackground(new Color(255, 150, 0));
-        } else if (status1.equalsIgnoreCase("Posted")) {
-            status.setBackground(new Color(89, 146, 201));
-        } else if (status1.equalsIgnoreCase("Claimed")) {
-            status.setBackground(new Color(45, 226, 0));
-        } else if (status1.equalsIgnoreCase("Claim Requested")) {
-            status.setBackground(new Color(128, 0, 128));
+        if (status != null) {
+            if (status.equalsIgnoreCase("Posted")) {
+                        statusPanel.setBackground(new Color(89, 146, 201)); // Accepted
+                        statusPanel.setForeground(Color.BLACK); // Ensure black text
+                    } else if (status.equalsIgnoreCase("Claimed")) {
+                        statusPanel.setBackground(new Color(45, 226, 0)); // Claimed
+                        statusPanel.setForeground(Color.BLACK); // Ensure black text
+                    } else if (status.equalsIgnoreCase("Claim Pending")) {
+                        statusPanel.setBackground(new Color(255, 255, 102)); // Pending Claim
+                        statusPanel.setForeground(Color.BLACK); // Ensure black text
+                    } else if (status.equalsIgnoreCase("Pending")) {
+                        statusPanel.setBackground(new Color(255, 204, 0));
+                        statusPanel.setForeground(Color.BLACK);
+                    } else if (status.equalsIgnoreCase("Claim Requested")) {
+                        statusPanel.setBackground(new Color(128, 0, 128));
+                        statusPanel.setForeground(Color.BLACK);
+                    } else if (status.equalsIgnoreCase("Claim Approved")) {
+                        statusPanel.setBackground(new Color(168, 168, 168));
+                        statusPanel.setForeground(Color.BLACK);
+                    } else if (status.equalsIgnoreCase("Cancel Claimed")) {
+                        statusPanel.setBackground(new Color(255, 41, 41));
+                        statusPanel.setForeground(Color.BLACK);
+                    } else {
+                        statusPanel.setBackground(Color.white); // Default background for unselected rows
+                        statusPanel.setForeground(Color.BLACK); // Default text color
+                    }
         } else {
-            status.setBackground(new Color(178, 190, 181));
+            statusPanel.setBackground(new Color(178, 190, 181));
         }
-        status.add(Box.createRigidArea(new Dimension(0, 10)));
-        status.add(statusLbl);
-        status.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        statusPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        statusPanel.add(statusLbl);
+        statusPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
         // Image
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -413,12 +583,10 @@ public class PendingReportItem extends javax.swing.JFrame {
             Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
             Image scaledImg = getScaledImage(img, 270, 225);
             imageLabel.setIcon(new ImageIcon(scaledImg));
-
         } else {
             imageLabel.setText("No Image");
         }
 
-        // Wrap the imageLabel in a JPanel with padding
         JPanel imagePanel = new JPanel(new BorderLayout());
         imagePanel.add(imageLabel, BorderLayout.CENTER);
         imagePanel.setBackground(Color.WHITE);
@@ -430,8 +598,9 @@ public class PendingReportItem extends javax.swing.JFrame {
         infos.setBackground(Color.WHITE);
         Font font = new Font("Segoe UI Variable", Font.PLAIN, 14);
 
-        itemId = rs.getInt("id");
-        JLabel nameLabel = new JLabel(rs.getString("itemName"));
+        int itemId = rs.getInt("id");
+        String itemName = rs.getString("itemName");
+        JLabel nameLabel = new JLabel(itemName != null ? itemName : "Unknown Item");
         nameLabel.setMinimumSize(new Dimension(width, (height + 10)));
         nameLabel.setPreferredSize(new Dimension(width, (height + 10)));
         nameLabel.setMaximumSize(new Dimension(width, (height + 10)));
@@ -439,7 +608,8 @@ public class PendingReportItem extends javax.swing.JFrame {
         infos.add(nameLabel);
         infos.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        JLabel locationLabel = new JLabel("Location: " + rs.getString("location"));
+        String location = rs.getString("location");
+        JLabel locationLabel = new JLabel("Location: " + (location != null ? location : "Unknown"));
         locationLabel.setMinimumSize(new Dimension(width, height));
         locationLabel.setPreferredSize(new Dimension(width, height));
         locationLabel.setMaximumSize(new Dimension(width, height));
@@ -447,7 +617,8 @@ public class PendingReportItem extends javax.swing.JFrame {
         infos.add(locationLabel);
         infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
-        JLabel dateLabel = new JLabel("Date Lost: " + rs.getString("dateLost"));
+        String dateLost = rs.getString("dateLost");
+        JLabel dateLabel = new JLabel("Date Lost: " + (dateLost != null ? dateLost : "Unknown"));
         dateLabel.setMinimumSize(new Dimension(width, height));
         dateLabel.setPreferredSize(new Dimension(width, height));
         dateLabel.setMaximumSize(new Dimension(width, height));
@@ -455,7 +626,26 @@ public class PendingReportItem extends javax.swing.JFrame {
         infos.add(dateLabel);
         infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
-        JLabel timeLabel = new JLabel("Time: " + rs.getString("timeLost"));
+        String timeLost = rs.getString("timeLost");
+        String formattedTime = "Unknown";
+
+        if (timeLost != null && !timeLost.isEmpty()) {
+            try {
+                // Parse the 24-hour format time string
+                SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
+                Date date = parser.parse(timeLost);
+
+                // Format it to 12-hour time with AM/PM
+                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a");
+                formattedTime = formatter.format(date);
+            } catch (ParseException e) {
+                // Log error or handle gracefully
+                formattedTime = "Invalid time";
+            }
+        }
+
+        JLabel timeLabel = new JLabel("Time: " + formattedTime);
+
         timeLabel.setMinimumSize(new Dimension(width, height));
         timeLabel.setPreferredSize(new Dimension(width, height));
         timeLabel.setMaximumSize(new Dimension(width, height));
@@ -464,29 +654,26 @@ public class PendingReportItem extends javax.swing.JFrame {
         infos.add(Box.createRigidArea(new Dimension(0, 2)));
 
         String description = rs.getString("description");
-        JLabel descLbl = new JLabel("<html><body style='width: 185px;'>Description: " + description + "</body></html>");
+        JLabel descLbl = new JLabel("<html><body style='width: 185px;'>Description: " + (description != null ? description : "No description") + "</body></html>");
         descLbl.setFont(font);
         descLbl.setAlignmentX(LEFT_ALIGNMENT);
         descLbl.setAlignmentY(BOTTOM_ALIGNMENT);
         infos.add(descLbl);
 
         JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(
-                new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(Color.white);
-        contentPanel.add(status);
+        contentPanel.add(statusPanel);
         contentPanel.add(imagePanel);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         infos.setPreferredSize(new Dimension(270, 250));
         contentPanel.add(infos);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-
         contentPanel.setPreferredSize(new Dimension(270, 450));
         contentPanel.setMaximumSize(new Dimension(270, 450));
         card.add(contentPanel);
         return card;
-
     }
 
     Image getScaledImage(Image srcImg, int width, int height) {
@@ -502,6 +689,63 @@ public class PendingReportItem extends javax.swing.JFrame {
 
         return resizedImg;
     }
+    
+      private void componentShown(){
+        if (Session.userId != null && Session.userSchoolId != null) {
+            try (Connection conn = DBConnection.DataBase.getConnection()) {
+                String getUserQuery = "SELECT * FROM users_tbl WHERE id = ?";
+                PreparedStatement pstUser = conn.prepareStatement(getUserQuery);
+                pstUser.setInt(1, Session.userId);
+                ResultSet rs = pstUser.executeQuery();
+
+                if (rs.next()) {
+                    byte[] imgBytes = rs.getBytes("profile");
+                    if (imgBytes != null) {
+                        Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
+                       Image scaledImg = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                        Image circleImg = makeRoundedCorner(scaledImg, 60, 60);
+                        profile.setIcon(new ImageIcon(circleImg));
+                    } else {
+                        URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+                        if (iconPath != null) {
+                            profile.setIcon(new ImageIcon(iconPath));
+                        } else {
+                            System.err.println("Default icon not found.");
+                        }
+                    }
+
+                    // Update this with the actual column names
+                    fname1.setText(rs.getString("lastName") + ", " + rs.getString("firstName"));
+                }
+
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(ClaimItem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+            if (iconPath != null) {
+                profile.setIcon(new ImageIcon(iconPath));
+            }
+            fname1.setText("");
+        }
+    }
+    
+    private Image makeRoundedCorner(Image image, int width, int height) {
+    BufferedImage rounded = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = rounded.createGraphics();
+
+    // Enable anti-aliasing
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // Create a circular clip
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+
+    // Draw the original image inside the circle
+    g2.drawImage(image, 0, 0, width, height, null);
+
+    g2.dispose();
+    return rounded;
+}
 
     /**
      * @param args the command line arguments
@@ -540,18 +784,21 @@ public class PendingReportItem extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel cardPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel fname1;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel profile;
     // End of variables declaration//GEN-END:variables
 }

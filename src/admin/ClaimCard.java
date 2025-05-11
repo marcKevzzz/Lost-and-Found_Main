@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import user.Session;
+
 /**
  *
  * @author QCU
@@ -24,12 +25,14 @@ public class ClaimCard extends javax.swing.JPanel {
     public ClaimCard() {
         initComponents();
     }
-    
-    private int claimId;
 
-     public void setClaimInfo(byte[] imgBytes, String dateLost, String userName,
-                         String studentId, String yrSec, String email, String phone, String inquiry, int claimId) {
+    private int claimId;
+    private int index;
+
+    public void setClaimInfo(byte[] imgBytes, String dateLost, String userName,
+            String studentId, String yrSec, String email, String phone, String inquiry, int claimId, int index, String status) {
         this.claimId = claimId;
+        this.index = index;
         dateLost1.setText(dateLost);
         userName1.setText(userName);
         studentId1.setText(studentId);
@@ -38,16 +41,17 @@ public class ClaimCard extends javax.swing.JPanel {
         phone1.setText(phone);
         inquiry2.setText(inquiry);
 
-
         if (imgBytes != null) {
             ImageIcon originalIcon = new ImageIcon(imgBytes);
             Image scaledImage = originalIcon.getImage().getScaledInstance(230, 230, Image.SCALE_SMOOTH);
             ImageIcon icon = new ImageIcon(scaledImage);
             proof.setIcon(icon);
         }
+                System.out.println(status);
+
+        check(status);
     }
-     
-     
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -241,56 +245,72 @@ public class ClaimCard extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void accept1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accept1ActionPerformed
-       String decision = "Claim Request";
-        try (Connection con = DBConnection.DataBase.getConnection()) {
-            con.setAutoCommit(false); // Start transaction
+      
 
-            String getQuery = "SELECT * FROM itemReport WHERE id = ?";
-            PreparedStatement psts = con.prepareStatement(getQuery);
-            psts.setInt(1, claimId);
-            ResultSet rs = psts.executeQuery();
+            String decision = "Claim Request";
+            String getQuery = "";
+            String updateItemQuery = "";
+            String updateClaimQuery = "";
+            try (Connection con = DBConnection.DataBase.getConnection()) {
+                con.setAutoCommit(false); // Start transaction
 
-            int reportId = -1;
-            if (rs.next()) {
-                reportId = rs.getInt("reportId"); // Only if you need it later
-            } else {
-                JOptionPane.showMessageDialog(this, "Report ID not found for the claim.");
-                return;
+                // Decide which table to query and update based on index
+                if (index == 0) {
+                    getQuery = "SELECT * FROM itemFound WHERE id = ?";
+                    updateItemQuery = "UPDATE itemFound SET status = ?, timestamp = CURRENT_TIMESTAMP WHERE id = ?";
+                    updateClaimQuery = "UPDATE claims_tbl SET status_claim = ?, timestamp = CURRENT_TIMESTAMP WHERE claimId = ?";
+                } else if (index == 1) {
+                    getQuery = "SELECT * FROM itemreport WHERE id = ?";
+                    updateItemQuery = "UPDATE itemreport SET status = ?, timestamp = CURRENT_TIMESTAMP WHERE id = ?";
+                    updateClaimQuery = "UPDATE claimsLost_tbl SET status_claim = ?, timestamp = CURRENT_TIMESTAMP WHERE claimId = ?";
+                } else {
+                    JOptionPane.showMessageDialog(this, "Invalid index provided.");
+                    return;
+                }
+
+                // Get the report data
+                PreparedStatement psts = con.prepareStatement(getQuery);
+                psts.setInt(1, claimId);
+                ResultSet rs = psts.executeQuery();
+
+                int reportId = -1;
+                if (rs.next()) {
+                    reportId = rs.getInt("reportId");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Report ID not found for the claim.");
+                    return;
+                }
+
+                // Update item status
+                PreparedStatement ps = con.prepareStatement(updateItemQuery);
+                ps.setString(1, decision);
+                ps.setInt(2, claimId);
+                int psU = ps.executeUpdate();
+
+                // Update claim status
+                PreparedStatement pst = con.prepareStatement(updateClaimQuery);
+                pst.setString(1, decision);
+                pst.setInt(2, claimId);
+                int claimUpdate = pst.executeUpdate();
+
+                if (claimUpdate > 0 && psU > 0) {
+                    con.commit();
+                    accept1.setText("Approved");
+                    accept1.setEnabled(false);
+                    accept1.setBorderPainted(false);
+                    accept1.setContentAreaFilled(false);
+                    repaint();
+                    revalidate();
+                    JOptionPane.showMessageDialog(this, "Confirmed Claim");
+                } else {
+                    con.rollback();
+                    JOptionPane.showMessageDialog(this, "Failed to confirm claim. Please try again.");
+                }
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
 
-            // Update itemReport
-            String update = "UPDATE itemReport SET status = ?, timestamp=CURRENT_TIMESTAMP WHERE id = ?";
-            PreparedStatement ps = con.prepareStatement(update);
-            ps.setString(1, decision);
-            ps.setInt(2, claimId);
-            int psU = ps.executeUpdate();
-
-            // Update claims_tbl
-            String updates = "UPDATE claims_tbl SET status_claim = ?, timestamp=CURRENT_TIMESTAMP WHERE claimId = ?";
-            PreparedStatement pst = con.prepareStatement(updates);
-            pst.setString(1, decision);
-            pst.setInt(2, claimId);
-            int claimUpdate = pst.executeUpdate();
-
-            if (claimUpdate > 0 && psU > 0) {
-                con.commit(); // Commit transaction ✅
-                  accept1.setText("Approved");
-                accept1.setEnabled(false);
-                accept1.setBorderPainted(false);
-                accept1.setContentAreaFilled(false);
-                repaint();
-                revalidate();
-                JOptionPane.showMessageDialog(this, "Confirmed Claim");
-                
-            } else {
-                con.rollback(); // Rollback if something failed ❌
-                JOptionPane.showMessageDialog(this, "Failed to confirm claim. Please try again.");
-            }
-
-            System.out.println(claimId);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
 
 
     }//GEN-LAST:event_accept1ActionPerformed
@@ -298,10 +318,20 @@ public class ClaimCard extends javax.swing.JPanel {
     private void more1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_more1ActionPerformed
         jDialog1.pack();                         // Fit size
         jDialog1.setLocationRelativeTo(this); // Center on parent
-        jDialog1.setVisible(true); 
-        
-    }//GEN-LAST:event_more1ActionPerformed
+        jDialog1.setVisible(true);
 
+    }//GEN-LAST:event_more1ActionPerformed
+    
+    private void check(String status){
+          if (!status.equalsIgnoreCase("Claim Pending")) {
+                 accept1.setText("Approved");
+            accept1.setEnabled(false);
+            accept1.setBorderPainted(false);
+            accept1.setContentAreaFilled(false);
+            repaint();
+            revalidate();
+          }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel YrSec1;

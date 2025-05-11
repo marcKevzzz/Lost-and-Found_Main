@@ -10,6 +10,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,10 +26,14 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -48,16 +60,20 @@ public final class ClaimItem extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel27 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
+        fname = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
         panelClaim = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -70,176 +86,205 @@ public final class ClaimItem extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1300, 700));
 
-        jPanel6.setBackground(new java.awt.Color(0, 0, 204));
+        jPanel6.setBackground(new java.awt.Color(0, 51, 153));
         jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
         jPanel6.setPreferredSize(new java.awt.Dimension(82, 700));
-
-        jPanel7.setOpaque(false);
-        jPanel7.setPreferredSize(new java.awt.Dimension(70, 60));
-
-        jLabel6.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("QCU");
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addComponent(jLabel6)
-                .addContainerGap())
-        );
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel8.setBackground(new java.awt.Color(0, 51, 255));
         jPanel8.setMinimumSize(new java.awt.Dimension(32, 20));
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(126, 105, -1, 35));
 
-        jLabel7.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Found Item ");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+        jPanel18.setBackground(new java.awt.Color(102, 102, 255));
+        jPanel18.setOpaque(false);
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 162, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 32, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 482, -1, -1));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel18.setText("  Lost and Found");
+        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
+                jLabel18MouseClicked(evt);
             }
         });
-        jPanel8.add(jLabel7, java.awt.BorderLayout.CENTER);
+        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, 35));
 
-        jLabel9.setBackground(new java.awt.Color(153, 153, 255));
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Profile");
-        jLabel9.setPreferredSize(new java.awt.Dimension(35, 20));
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel27.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel27.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel27.setText("  Pending Report");
+        jLabel27.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel27.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel27.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
+                jLabel27MouseClicked(evt);
             }
         });
+        jPanel6.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 200, 150, 30));
+
+        jLabel21.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel21.setText("  Claim Item");
+        jLabel21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel21.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel21MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 35));
 
         jPanel9.setBackground(new java.awt.Color(0, 51, 255));
-        jPanel9.setMinimumSize(new java.awt.Dimension(32, 20));
-        jPanel9.setOpaque(false);
-
-        jLabel10.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("Pending Report");
-        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel10MouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 160, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+            .addGap(0, 34, Short.MAX_VALUE)
         );
 
-        jPanel10.setBackground(new java.awt.Color(0, 51, 255));
-        jPanel10.setMinimumSize(new java.awt.Dimension(32, 20));
-        jPanel10.setOpaque(false);
-        jPanel10.setLayout(new java.awt.BorderLayout());
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 160, -1));
 
-        jLabel8.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Claim Item ");
-        jLabel8.setOpaque(true);
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel19.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel19.setText("  Report Item");
+        jLabel19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel19.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
+                jLabel19MouseClicked(evt);
             }
         });
-        jPanel10.add(jLabel8, java.awt.BorderLayout.CENTER);
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
-            .addGroup(jPanel6Layout.createSequentialGroup()
+        jLabel20.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel20.setText("  Profile");
+        jLabel20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel20.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 119, 34));
+
+        jPanel7.setBackground(new java.awt.Color(0, 39, 117));
+        jPanel7.setForeground(new java.awt.Color(51, 51, 51));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-logo.png"))); // NOI18N
+
+        jLabel22.setBackground(new java.awt.Color(0, 51, 153));
+        jLabel22.setFont(new java.awt.Font("Segoe UI Symbol", 1, 24)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel22.setText("Lost and Found");
+
+        profile.setBackground(new java.awt.Color(255, 0, 0));
+        profile.setFont(new java.awt.Font("Segoe UI Variable", 0, 16)); // NOI18N
+        profile.setForeground(new java.awt.Color(255, 255, 255));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user-4-32.png"))); // NOI18N
+        profile.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+
+        fname.setFont(new java.awt.Font("Segoe UI Historic", 0, 18)); // NOI18N
+        fname.setForeground(new java.awt.Color(255, 255, 255));
+        fname.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 686, Short.MAX_VALUE)
+                .addComponent(fname, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(profile, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel7Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE)
+                        .addGap(8, 8, 8))))
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22)
+                    .addComponent(fname, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel2.setOpaque(false);
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
-        );
-
-        panelClaim.setOpaque(false);
+        panelClaim.setBackground(new java.awt.Color(255, 255, 255));
         panelClaim.setPreferredSize(new java.awt.Dimension(1212, 584));
-
-        javax.swing.GroupLayout panelClaimLayout = new javax.swing.GroupLayout(panelClaim);
-        panelClaim.setLayout(panelClaimLayout);
-        panelClaimLayout.setHorizontalGroup(
-            panelClaimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1212, Short.MAX_VALUE)
-        );
-        panelClaimLayout.setVerticalGroup(
-            panelClaimLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 584, Short.MAX_VALUE)
-        );
+        panelClaim.setLayout(new javax.swing.BoxLayout(panelClaim, javax.swing.BoxLayout.Y_AXIS));
+        jScrollPane1.setViewportView(panelClaim);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelClaim, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelClaim, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -248,160 +293,297 @@ public final class ClaimItem extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        new ItemDisplay().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
-
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        new Profile().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel9MouseClicked
-
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel8MouseClicked
-
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+                componentShown();
+
+
 
     }//GEN-LAST:event_formComponentShown
+    
+    private void componentShown(){
+        if (Session.userId != null && Session.userSchoolId != null) {
+            try (Connection conn = DBConnection.DataBase.getConnection()) {
+                String getUserQuery = "SELECT * FROM users_tbl WHERE id = ?";
+                PreparedStatement pstUser = conn.prepareStatement(getUserQuery);
+                pstUser.setInt(1, Session.userId);
+                ResultSet rs = pstUser.executeQuery();
 
-    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
-        new PendingReportItem().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel10MouseClicked
-
-    void loadAllClaims() {
-        panelClaim.removeAll(); // Clear the panel first
-        panelClaim.setLayout(new BoxLayout(panelClaim, BoxLayout.Y_AXIS));
-        panelClaim.add(Box.createRigidArea(new Dimension(0, 20)));
-        ItemDisplay it = new ItemDisplay();
-
-        if (Session.userId != null) {
-            try (Connection con = DBConnection.DataBase.getConnection()) {
-
-                // --- 1st: Load Retrieval Items (Provide Information)
-                JLabel lblRetrieval = new JLabel("Contact Information (Provide Information For Item Retrieval)");
-                lblRetrieval.setFont(new Font("Segoe UI Variable", Font.BOLD, 20));
-                lblRetrieval.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
-                panelClaim.add(lblRetrieval);
-
-                boolean hasRetrieval = false;
-
-                String queryRetrieval = "SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim "
-                        + "FROM itemreport ir "
-                        + "JOIN claims_tbl ct ON ir.id = ct.claimId "
-                        + "WHERE ct.userId = ? AND (ct.status_claim='Claim Approved' OR ct.status_claim = 'Claim Request') AND (ir.status='Claim Request' OR ir.status='Claim Approved')";
-
-                ResultSet rsRetrieval;
-                try (PreparedStatement psRetrieval = con.prepareStatement(queryRetrieval)) {
-                    psRetrieval.setInt(1, Session.userId);
-                    rsRetrieval = psRetrieval.executeQuery();
-                    while (rsRetrieval.next()) {
-                        hasRetrieval = true;
-
-                        UserGetInfo cards = new UserGetInfo();
-
-                        Timestamp timestamp = rsRetrieval.getTimestamp("timestamp");
-                        String sdf = it.getTimeAgo(timestamp);
-
-                        cards.getClaimInfo(
-                                rsRetrieval.getString("name"),
-                                rsRetrieval.getString("studentNum"),
-                                rsRetrieval.getString("yearSec"),
-                                rsRetrieval.getString("email"),
-                                rsRetrieval.getString("phone"),
-                                sdf,
-                                rsRetrieval.getString("retrievalInfo"),
-                                rsRetrieval.getString("status"),
-                                rsRetrieval.getInt("id")
-                        );
-
-                        System.out.println(rsRetrieval.getString("name"));
-                        System.out.println( rsRetrieval.getString("studentNum"));
-                        System.out.println( rsRetrieval.getString("yearSec"));
-                        System.out.println(rsRetrieval.getString("email"));
-                        System.out.println( rsRetrieval.getString("phone"));
-                        System.out.println(  sdf);
-                        System.out.println(  rsRetrieval.getString("retrievalInfo"));
-                        System.out.println(rsRetrieval.getInt("id"));
-
-                        cards.setAlignmentX(Component.LEFT_ALIGNMENT);
-                        panelClaim.add(cards);
-                        panelClaim.add(Box.createVerticalStrut(10));
+                if (rs.next()) {
+                    byte[] imgBytes = rs.getBytes("profile");
+                    if (imgBytes != null) {
+                        Image img = ImageIO.read(new ByteArrayInputStream(imgBytes));
+                       Image scaledImg = img.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                        Image circleImg = makeRoundedCorner(scaledImg, 60, 60);
+                        profile.setIcon(new ImageIcon(circleImg));
+                    } else {
+                        URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+                        if (iconPath != null) {
+                            profile.setIcon(new ImageIcon(iconPath));
+                        } else {
+                            System.err.println("Default icon not found.");
+                        }
                     }
-                    if (!hasRetrieval) {
-                        JLabel lbl = new JLabel("No Items To Provide Info");
-                        lbl.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
-                        lbl.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
-                        panelClaim.add(lbl);
-                    }
+
+                    // Update this with the actual column names
+                    fname.setText(rs.getString("lastName") + ", " + rs.getString("firstName"));
                 }
-                rsRetrieval.close();
 
-                // --- 2nd: Load Pending Claims (Get Item)
-                JLabel lblPendingClaim = new JLabel("Item Retrieval (Get your belongings)");
-                lblPendingClaim.setFont(new Font("Segoe UI Variable", Font.BOLD, 20));
-                lblPendingClaim.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 0)); // More space
-                panelClaim.add(lblPendingClaim);
-
-                boolean hasPendingClaim = false;
-
-                String queryPending = "SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim "
-                        + "FROM itemreport ir "
-                        + "JOIN claims_tbl ct ON ir.id = ct.claimId "
-                        + "WHERE (ct.status_claim = 'Claimed' OR ct.status_claim = 'Claim Approved') AND (ir.status='Claim Approved' OR ir.status='Claimed') AND ct.whoclaim = ?";
-
-                ResultSet rsPending;
-                try (PreparedStatement psPending = con.prepareStatement(queryPending)) {
-                    psPending.setInt(1, Session.userId);
-                    rsPending = psPending.executeQuery();
-                    while (rsPending.next()) {
-                        hasPendingClaim = true;
-
-                        UserClaimComponents card = new UserClaimComponents();
-                        Timestamp timestamp = rsPending.getTimestamp("timestamp");
-                        String sdf = it.getTimeAgo(timestamp);
-
-                        card.setClaimInfo(
-                                rsPending.getString("name"),
-                                rsPending.getString("studentNum"),
-                                rsPending.getString("yearSec"),
-                                rsPending.getString("email"),
-                                rsPending.getString("phone"),
-                                sdf,
-                                rsPending.getString("retrievalInfo"),
-                                rsPending.getString("status"),
-                                rsPending.getInt("id")
-                        );
-                        System.out.println(rsPending.getInt("id"));
-
-                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
-                        panelClaim.add(card);
-                        panelClaim.add(Box.createVerticalStrut(10));
-                    }
-                    if (!hasPendingClaim) {
-                        JLabel lbl = new JLabel("No Claimed Items");
-                        lbl.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
-                        lbl.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
-                        panelClaim.add(lbl);
-                    }
-                }
-                rsPending.close();
-
-                // --- Final Refresh
-                panelClaim.revalidate();
-                panelClaim.repaint();
-
-            } catch (SQLException ex) {
-                Logger.getLogger(ViewClaim.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException | IOException ex) {
+                Logger.getLogger(ClaimItem.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
+            URL iconPath = getClass().getClassLoader().getResource("icons/user4-32.png");
+            if (iconPath != null) {
+                profile.setIcon(new ImageIcon(iconPath));
+            }
+            fname.setText("");
+        }
+    }
+    
+    private Image makeRoundedCorner(Image image, int width, int height) {
+    BufferedImage rounded = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = rounded.createGraphics();
+
+    // Enable anti-aliasing
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+    // Create a circular clip
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+
+    // Draw the original image inside the circle
+    g2.drawImage(image, 0, 0, width, height, null);
+
+    g2.dispose();
+    return rounded;
+}
+
+    
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+
+         Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_profileMouseClicked
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        new ItemDisplay().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
+        new PendingReportItem().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel27MouseClicked
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        new ItemReport().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel19MouseClicked
+    void loadAllClaims() {
+        panelClaim.removeAll();
+        panelClaim.setLayout(new BoxLayout(panelClaim, BoxLayout.Y_AXIS));
+        panelClaim.add(Box.createRigidArea(new Dimension(0, 20)));
+
+        ItemDisplay it = new ItemDisplay();
+
+        if (Session.userId == null) {
             JLabel lbl = new JLabel("No Claiming Item");
             lbl.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
             lbl.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
             panelClaim.add(lbl);
+            return;
         }
+
+        try (Connection con = DBConnection.DataBase.getConnection()) {
+
+            // Section 1: Items claimed by current user
+            JLabel lblRetrieval = new JLabel("Provide Your Contact Info (For Item Retrieval)");
+            lblRetrieval.setFont(new Font("Segoe UI Variable", Font.BOLD, 20));
+            lblRetrieval.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 0));
+            panelClaim.add(lblRetrieval);
+
+            JPanel header1 = createHeaderPanel(new int[]{130, 80, 88, 178, 110, 203});
+            panelClaim.add(header1);
+            panelClaim.add(Box.createVerticalStrut(10));
+
+            String retrievalQuery = """
+           SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim, 
+                     'Found' AS itemType,
+                     u.firstName, u.lastName, u.schoolId, u.yearSec, u.email, u.phone,
+                     ir.reportId
+              FROM itemfound ir
+              JOIN claims_tbl ct ON ir.id = ct.claimId
+              JOIN users_tbl u ON ir.reportId = u.id  -- 🟢 show the finder info
+              WHERE ct.userId = ?
+                AND ct.status_claim IN ('Claim Approved', 'Claim Request')
+                AND ir.status IN ('Claim Request', 'Claim Approved')
+              
+              UNION
+              
+              SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim,
+                       'Lost' AS itemType,
+                       u.firstName, u.lastName, u.schoolId, u.yearSec, u.email, u.phone,
+                       ct.whoclaim AS reportId
+                FROM itemreport ir
+                JOIN claimsLost_tbl ct ON ir.id = ct.claimId
+                JOIN users_tbl u ON ct.whoclaim = u.id  -- 🔄 show the one who claimed the lost item
+                WHERE ct.userId = ?  -- 🔄 current user is the one who lost the item
+                  AND ct.status_claim IN ('Claim Approved', 'Claim Request')
+                  AND ir.status IN ('Claim Request', 'Claim Approved')
+        """;
+
+            try (PreparedStatement ps = con.prepareStatement(retrievalQuery)) {
+                ps.setInt(1, Session.userId);
+                ps.setInt(2, Session.userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    boolean hasRetrieval = false;
+
+                    while (rs.next()) {
+                        hasRetrieval = true;
+                        UserGetInfo card = new UserGetInfo();
+                        String timeAgo = it.getTimeAgo(rs.getTimestamp("timestamp"));
+                        int typeFlag = rs.getString("itemType").equals("Found") ? 1 : 0;
+
+                        card.getClaimInfo(
+                                rs.getString("name"),
+                                rs.getString("studentNum"),
+                                rs.getString("yearSec"),
+                                rs.getString("email"),
+                                rs.getString("phone"),
+                                timeAgo,
+                                rs.getString("retrievalInfo"),
+                                rs.getString("status"),
+                                rs.getInt("id"),
+                                typeFlag
+                        );
+                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                        panelClaim.add(card);
+                        panelClaim.add(Box.createVerticalStrut(10));
+                    }
+
+                    if (!hasRetrieval) {
+                        JLabel noRetrieval = new JLabel("No items requiring your contact info.");
+                        noRetrieval.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
+                        noRetrieval.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
+                        panelClaim.add(noRetrieval);
+                    }
+                }
+            }
+
+            // Section 2: Items reported by current user, claimed by others
+            JLabel lblPending = new JLabel("Get Your Item (Someone Provided Info)");
+            lblPending.setFont(new Font("Segoe UI Variable", Font.BOLD, 20));
+            lblPending.setBorder(BorderFactory.createEmptyBorder(30, 10, 10, 0));
+            panelClaim.add(lblPending);
+
+            JPanel header2 = createHeaderPanel(new int[]{120, 154, 144, 170, 100, 203});
+            panelClaim.add(header2);
+            panelClaim.add(Box.createVerticalStrut(10));
+
+            String pendingQuery = """
+            SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim, 
+                   'Found' AS itemType,
+                   u.firstName, u.lastName, u.schoolId, u.yearSec, u.email, u.phone,
+                   ct.whoclaim AS userId
+            FROM itemfound ir
+            JOIN claims_tbl ct ON ir.id = ct.claimId
+            JOIN users_tbl u ON ct.userId = u.id  -- Get info of the person who claimed the found item
+            WHERE ct.whoclaim = ?                  -- Logged-in user is the one who found it
+              AND ct.status_claim IN ('Claim Approved', 'Claimed')
+              AND ir.status IN ('Claim Approved', 'Claimed')
+            
+            UNION
+            
+            SELECT ir.*, ct.claimDate, ct.retrievalInfo, ct.status_claim,
+                   'Lost' AS itemType,
+                   u.firstName, u.lastName, u.schoolId, u.yearSec, u.email, u.phone,
+                   ct.whoclaim AS userId
+            FROM itemreport ir
+            JOIN claimsLost_tbl ct ON ir.id = ct.claimId
+            JOIN users_tbl u ON ct.whoclaim = u.id  -- Get info of the person who claimed the lost item
+            WHERE ct.whoclaim = ?                    -- Logged-in user is the one who lost the item
+              AND ct.status_claim IN ('Claim Approved', 'Claimed')
+              AND ir.status IN ('Claim Approved', 'Claimed')
+        """;
+
+            try (PreparedStatement ps = con.prepareStatement(pendingQuery)) {
+                ps.setInt(1, Session.userId);
+                ps.setInt(2, Session.userId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    boolean hasPending = false;
+
+                    while (rs.next()) {
+                        hasPending = true;
+                        UserClaimComponents card = new UserClaimComponents();
+                        String timeAgo = it.getTimeAgo(rs.getTimestamp("timestamp"));
+                        int typeFlag = rs.getString("itemType").equals("Found") ? 1 : 0;
+
+                        card.setClaimInfo(
+                                rs.getString("name"),
+                                rs.getString("studentNum"),
+                                rs.getString("yearSec"),
+                                rs.getString("email"),
+                                rs.getString("phone"),
+                                timeAgo,
+                                rs.getString("retrievalInfo"),
+                                rs.getString("status"),
+                                rs.getInt("id"),
+                                typeFlag
+                        );
+                        card.setAlignmentX(Component.LEFT_ALIGNMENT);
+                        panelClaim.add(card);
+                        panelClaim.add(Box.createVerticalStrut(10));
+                    }
+
+                    if (!hasPending) {
+                        JLabel noPending = new JLabel("No claimed items available for pickup.");
+                        noPending.setFont(new Font("Segoe UI Semilight", Font.PLAIN, 14));
+                        noPending.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 0));
+                        panelClaim.add(noPending);
+                    }
+                }
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewClaim.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        panelClaim.revalidate();
+        panelClaim.repaint();
+    }
+
+    private JLabel createHeaderLabel(String text, int width) {
+        JLabel lbl = new JLabel(text);
+        lbl.setFont(new Font("Segoe UI Variable", Font.PLAIN, 14));
+        lbl.setBorder(BorderFactory.createEmptyBorder(0, 2, 2, 0));
+        Dimension d = new Dimension(width, lbl.getPreferredSize().height);
+        lbl.setPreferredSize(d);
+        lbl.setMaximumSize(d);
+
+        return lbl;
+    }
+
+    private JPanel createHeaderPanel(int[] widths) {
+        String[] titles = {"Name", "Student No.", "Section", "Gmail", "Phone", "Description"};
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.white);
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        panel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        for (int i = 0; i < titles.length; i++) {
+            panel.add(createHeaderLabel(titles[i], widths[i]));
+        }
+        return panel;
     }
 
 //    void loadGetClaimDetails() {
@@ -494,15 +676,11 @@ public final class ClaimItem extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClaimItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClaimItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClaimItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ClaimItem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -514,18 +692,22 @@ public final class ClaimItem extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel fname;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel panelClaim;
+    private javax.swing.JLabel profile;
     // End of variables declaration//GEN-END:variables
 }

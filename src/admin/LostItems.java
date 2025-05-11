@@ -6,68 +6,49 @@ package admin;
 
 import DBConnection.DataBase;
 import static DBConnection.DataBase.closeConnection;
-import Table.TableActionCellEditor;
 import Table.ImageCellEditor;
+import Table.TableActionCellEditor;
 import Table.TableActionCellRender;
 import Table.TableActionEvent;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
-import java.util.Vector;
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import jnafilechooser.api.JnaFileChooser;
 import java.awt.Image;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayInputStream;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.EventObject;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
-import javax.swing.JDialog;
-import javax.swing.JTextField;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Vector;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.event.TableModelEvent;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
-import user.Session;
 
 /**
  *
- * @author user
+ * @author QCU
  */
-public final class AdminPage extends javax.swing.JFrame {
+public class LostItems extends javax.swing.JFrame {
 
     /**
-     * Creates new form AdminPage
+     * Creates new form LostItems
      */
-    public AdminPage() {
+    public LostItems() {
         initComponents();
-
         time.addActionListener((ActionEvent ae) -> {
             lostFoundTable.setValueAt(j2.getText() + ":00", crows, column);
 
@@ -186,8 +167,8 @@ public final class AdminPage extends javax.swing.JFrame {
 
                             try (Connection conn = DataBase.getConnection()) {
                                 String updateQuery = hasImage
-                                        ? "UPDATE itemfound SET itemName=?, category=?, location=?, dateLost=?, timeLost=?, description=?, name=?, yearSec=?, email=?, phone=?, imageAttach=? WHERE id=?"
-                                        : "UPDATE itemfound SET itemName=?, category=?, location=?, dateLost=?, timeLost=?, description=?, name=?, yearSec=?, email=?, phone=? WHERE id=?";
+                                        ? "UPDATE itemreport SET itemName=?, category=?, location=?, dateLost=?, timeLost=?, description=?, name=?, yearSec=?, email=?, phone=?, imageAttach=? WHERE id=?"
+                                        : "UPDATE itemreport SET itemName=?, category=?, location=?, dateLost=?, timeLost=?, description=?, name=?, yearSec=?, email=?, phone=? WHERE id=?";
 
                                 PreparedStatement pst = conn.prepareStatement(updateQuery);
 
@@ -254,14 +235,14 @@ public final class AdminPage extends javax.swing.JFrame {
                             } else {
                                 return;
                             }
-                        }else {
+                        } else {
                             JOptionPane.showConfirmDialog(null, "Can't modify");
                             return;
                         }
 
                         // Update the database
                         try (Connection conn = DBConnection.DataBase.getConnection()) {
-                            String updateQuery = "UPDATE itemfound SET status = ? WHERE id = ?";
+                            String updateQuery = "UPDATE itemreport SET status = ? WHERE id = ?";
                             PreparedStatement pst = conn.prepareStatement(updateQuery);
                             pst.setString(1, newStatus); // e.g., "Accepted"
                             pst.setInt(2, itemId);
@@ -287,7 +268,7 @@ public final class AdminPage extends javax.swing.JFrame {
 
                         int userId = getUserIdFromRow(row);
 
-                        ViewClaim claim = new ViewClaim(userId);
+                        ViewClaimLost claim = new ViewClaimLost(userId);
                         // the form-generated panel
                         jDialog1.setContentPane(claim);
                         jDialog1.pack();
@@ -309,20 +290,19 @@ public final class AdminPage extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(model);
         lostFoundTable.setRowSorter(sorter);
 
-//         r.addWindowListener(new java.awt.event.WindowAdapter() {
-//            @Override
-//            public void windowClosed(java.awt.event.WindowEvent e) {
-//                // 🔁 Refresh your table or panel here
-//                formComponentShown(e); // or your refresh method
-//            }
-//        });
+        r.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                // 🔁 Refresh your table or panel here
+                formComponentShown(e); // or your refresh method
+            }
+        });
     }
-
     private final TableRowSorter<DefaultTableModel> sorter;
     private ImageCellEditor imageEditor;
     int column, crows = 0;
     private int editableRowIndex = -1;
-//    user.ItemReport r = new user.ItemReport();
+    user.ItemReport r = new user.ItemReport();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -339,13 +319,18 @@ public final class AdminPage extends javax.swing.JFrame {
         jOptionPane = new javax.swing.JOptionPane();
         j2 = new javax.swing.JTextField();
         jDialog1 = new javax.swing.JDialog();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        lostFoundTable = new javax.swing.JTable();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jPanel18 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         searchTxt = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -353,20 +338,13 @@ public final class AdminPage extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
-        jPanel18 = new javax.swing.JPanel();
-        jLabel21 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        lostFoundTable = new javax.swing.JTable();
 
-        time.setDisplayText(j2);
         time.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 timeMouseClicked(evt);
@@ -411,165 +389,11 @@ public final class AdminPage extends javax.swing.JFrame {
         });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(1300, 660));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setPreferredSize(new java.awt.Dimension(1300, 700));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setMinimumSize(new java.awt.Dimension(1100, 500));
-        jPanel3.setPreferredSize(new java.awt.Dimension(1200, 565));
-        jPanel3.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                jPanel3ComponentShown(evt);
-            }
-        });
-        jPanel3.setLayout(new java.awt.BorderLayout());
-
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(380, 60));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 15));
-
-        jLabel7.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
-        jLabel7.setText("ITEM FOUND REPORT TABLE");
-        jPanel4.add(jLabel7);
-
-        jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
-
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setPreferredSize(new java.awt.Dimension(1200, 0));
-
-        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jScrollPane1.setBorder(null);
-        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(1133, 0));
-
-        lostFoundTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        lostFoundTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "id", "status", "Image attachment", "Item Name", "Category", "Location", "Date Lost", "Time Lost", "Description", "Full Name", "Student Number", "Year & Sec", "Email", "Phone", "reportId", "Action"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        lostFoundTable.setToolTipText("");
-        lostFoundTable.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
-        lostFoundTable.setRequestFocusEnabled(false);
-        lostFoundTable.setRowHeight(100);
-        lostFoundTable.setRowMargin(2);
-        lostFoundTable.setShowGrid(false);
-        lostFoundTable.setUpdateSelectionOnSort(false);
-        jScrollPane1.setViewportView(lostFoundTable);
-        if (lostFoundTable.getColumnModel().getColumnCount() > 0) {
-            lostFoundTable.getColumnModel().getColumn(0).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(0).setPreferredWidth(1);
-            lostFoundTable.getColumnModel().getColumn(1).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(1).setPreferredWidth(1);
-            lostFoundTable.getColumnModel().getColumn(2).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(2).setPreferredWidth(60);
-            lostFoundTable.getColumnModel().getColumn(3).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(3).setPreferredWidth(60);
-            lostFoundTable.getColumnModel().getColumn(4).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(4).setPreferredWidth(60);
-            lostFoundTable.getColumnModel().getColumn(5).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(5).setPreferredWidth(100);
-            lostFoundTable.getColumnModel().getColumn(6).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(6).setPreferredWidth(60);
-            lostFoundTable.getColumnModel().getColumn(7).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(7).setPreferredWidth(80);
-            lostFoundTable.getColumnModel().getColumn(8).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(8).setPreferredWidth(70);
-            lostFoundTable.getColumnModel().getColumn(9).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(10).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(11).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(12).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(13).setResizable(false);
-            lostFoundTable.getColumnModel().getColumn(13).setPreferredWidth(100);
-        }
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1154, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 57, Short.MAX_VALUE))
-        );
-
-        jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setMinimumSize(new java.awt.Dimension(1120, 130));
-        jPanel2.setPreferredSize(new java.awt.Dimension(1120, 130));
-        jPanel2.setLayout(null);
-
-        searchTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchTxtActionPerformed(evt);
-            }
-        });
-        jPanel2.add(searchTxt);
-        searchTxt.setBounds(320, 10, 480, 30);
-
-        jButton1.setText("Search");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton1);
-        jButton1.setBounds(810, 10, 120, 30);
-
-        jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
-        jLabel8.setText("<html><body><a href=''>Logout</a></body></html>");
-        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel8MouseClicked(evt);
-            }
-        });
-        jPanel2.add(jLabel8);
-        jLabel8.setBounds(1080, 10, 70, 25);
-
-        jButton2.setText("Clear");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton2);
-        jButton2.setBounds(940, 10, 120, 30);
-
-        jSeparator1.setMinimumSize(new java.awt.Dimension(1000, 10));
-        jPanel2.add(jSeparator1);
-        jSeparator1.setBounds(0, 120, 1200, 10);
-
-        jLabel9.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
-        jLabel9.setText("Search");
-        jPanel2.add(jLabel9);
-        jLabel9.setBounds(250, 10, 70, 25);
 
         jPanel6.setBackground(new java.awt.Color(0, 51, 153));
         jPanel6.setMinimumSize(new java.awt.Dimension(100, 100));
@@ -614,6 +438,37 @@ public final class AdminPage extends javax.swing.JFrame {
 
         jPanel6.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(152, 482, -1, -1));
 
+        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
+
+        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel18.setText("  Lost Items");
+        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 160, -1));
+
         jLabel21.setBackground(new java.awt.Color(153, 153, 255));
         jLabel21.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
@@ -628,21 +483,6 @@ public final class AdminPage extends javax.swing.JFrame {
         });
         jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 150, 35));
 
-        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 35, Short.MAX_VALUE)
-        );
-
-        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, -1));
-
         jLabel19.setBackground(new java.awt.Color(153, 153, 255));
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
@@ -654,21 +494,11 @@ public final class AdminPage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel19MouseClicked(evt);
             }
-        });
-        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
-
-        jLabel18.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel18.setText("  Lost Items");
-        jLabel18.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel18MouseClicked(evt);
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel19MouseEntered(evt);
             }
         });
-        jPanel6.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 160, 35));
+        jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
 
         jPanel7.setBackground(new java.awt.Color(0, 39, 117));
         jPanel7.setForeground(new java.awt.Color(51, 51, 51));
@@ -698,7 +528,7 @@ public final class AdminPage extends javax.swing.JFrame {
                 .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(343, 343, 343)
                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(534, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -711,25 +541,136 @@ public final class AdminPage extends javax.swing.JFrame {
                 .addGap(6, 6, 6))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setMinimumSize(new java.awt.Dimension(1120, 130));
+        jPanel2.setLayout(null);
+
+        searchTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTxtActionPerformed(evt);
+            }
+        });
+        jPanel2.add(searchTxt);
+        searchTxt.setBounds(300, 10, 480, 30);
+
+        jButton1.setText("Search");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1);
+        jButton1.setBounds(790, 10, 120, 30);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
+        jLabel8.setText("<html><body><a href=''>Logout</a></body></html>");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel8);
+        jLabel8.setBounds(1050, 10, 70, 25);
+
+        jButton2.setText("Clear");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2);
+        jButton2.setBounds(920, 10, 120, 30);
+
+        jSeparator1.setMinimumSize(new java.awt.Dimension(1000, 10));
+        jPanel2.add(jSeparator1);
+        jSeparator1.setBounds(0, 120, 1200, 10);
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
+        jLabel9.setText("Search");
+        jPanel2.add(jLabel9);
+        jLabel9.setBounds(220, 10, 70, 25);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setMinimumSize(new java.awt.Dimension(1100, 500));
+        jPanel3.setPreferredSize(new java.awt.Dimension(1200, 565));
+        jPanel3.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel3ComponentShown(evt);
+            }
+        });
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel4.setPreferredSize(new java.awt.Dimension(380, 60));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 20, 15));
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI Variable", 0, 18)); // NOI18N
+        jLabel7.setText("ITEM LOST REPORT TABLE");
+        jPanel4.add(jLabel7);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setPreferredSize(new java.awt.Dimension(1200, 0));
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jScrollPane1.setBackground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1133, 0));
+
+        lostFoundTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        lostFoundTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "id", "status", "Image attachment", "Item Name", "Category", "Location", "Date Lost", "Time Lost", "Description", "Full Name", "Student Number", "Year & Sec", "Email", "Phone", "reportId", "Action"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        lostFoundTable.setToolTipText("");
+        lostFoundTable.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
+        lostFoundTable.setRequestFocusEnabled(false);
+        lostFoundTable.setRowHeight(100);
+        lostFoundTable.setRowMargin(2);
+        lostFoundTable.setShowGrid(false);
+        lostFoundTable.setUpdateSelectionOnSort(false);
+        jScrollPane1.setViewportView(lostFoundTable);
+
+        jPanel5.add(jScrollPane1, java.awt.BorderLayout.LINE_START);
+
+        jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1160, Short.MAX_VALUE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -737,14 +678,94 @@ public final class AdminPage extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
 
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        new AdminPage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        new UserManagement().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void searchTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTxtActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+//        String query = "SELECT * FROM itemreport WHERE ";
+//
+//        try (Connection conn = DataBase.getConnection(); PreparedStatement pst = conn.prepareStatement(query)) {
+//            ResultSet rs = pst.executeQuery();
+//
+//        } catch (Exception e) {
+//            //
+//            //        }
+            String searchText = searchTxt.getText().trim();
+
+            if (searchText.isEmpty()) {
+                sorter.setRowFilter(null);  // Show all rows
+            } else {
+                // Filter across all columns (case-insensitive)
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
+            }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        user.Session.currentUsername = null;
+        user.Session.userId = null;
+        user.Session.userSchoolId = null;
+        JOptionPane.showMessageDialog(this, "Logout Successfully");
+        new userAuth.Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        searchTxt.setText("");          // clear textfield
+        sorter.setRowFilter(null);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
+
+    }//GEN-LAST:event_jPanel3ComponentShown
+
+    private void timeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeMouseClicked
+
+    }//GEN-LAST:event_timeMouseClicked
+
+    private void dateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateMouseClicked
+
+    }//GEN-LAST:event_dateMouseClicked
+
+    private void dateComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dateComponentHidden
+
+    }//GEN-LAST:event_dateComponentHidden
+
+    private void j2InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_j2InputMethodTextChanged
+
+    }//GEN-LAST:event_j2InputMethodTextChanged
+
+    private void j2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_j2ActionPerformed
+
+    private void j2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_j2PropertyChange
+
+    }//GEN-LAST:event_j2PropertyChange
+
+    private void j2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_j2KeyReleased
+
+    }//GEN-LAST:event_j2KeyReleased
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         lostFoundTable.getColumnModel().getColumn(1).setCellEditor(imageEditor);
 
         hideColumn(0);
@@ -754,7 +775,7 @@ public final class AdminPage extends javax.swing.JFrame {
 
         time.set24hourMode(true);
 
-        String query = "SELECT * FROM itemfound";
+        String query = "SELECT * FROM itemReport";
 
         try (Connection conn = DataBase.getConnection(); PreparedStatement pst = conn.prepareStatement(query); ResultSet rs = pst.executeQuery()) {
 
@@ -853,7 +874,7 @@ public final class AdminPage extends javax.swing.JFrame {
                     String statusObj = table.getValueAt(rowIndex, 1).toString();
 
                     // Apply custom background colors based on status
-                    if (statusObj.equalsIgnoreCase("Posted")) {
+                     if (statusObj.equalsIgnoreCase("Posted")) {
                         c.setBackground(new Color(89, 146, 201)); // Accepted
                         c.setForeground(Color.BLACK); // Ensure black text
                     } else if (statusObj.equalsIgnoreCase("Claimed")) {
@@ -883,96 +904,11 @@ public final class AdminPage extends javax.swing.JFrame {
                 return c;
             }
         });
-
-
     }//GEN-LAST:event_formComponentShown
 
-    private void j2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_j2ActionPerformed
+    private void jLabel19MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_j2ActionPerformed
-
-    private void j2InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_j2InputMethodTextChanged
-
-
-    }//GEN-LAST:event_j2InputMethodTextChanged
-
-    private void j2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_j2PropertyChange
-
-    }//GEN-LAST:event_j2PropertyChange
-
-    private void j2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_j2KeyReleased
-
-    }//GEN-LAST:event_j2KeyReleased
-
-    private void timeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_timeMouseClicked
-
-
-    }//GEN-LAST:event_timeMouseClicked
-
-    private void dateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dateMouseClicked
-
-    }//GEN-LAST:event_dateMouseClicked
-
-    private void dateComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_dateComponentHidden
-
-    }//GEN-LAST:event_dateComponentHidden
-
-    private void jPanel3ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel3ComponentShown
-
-    }//GEN-LAST:event_jPanel3ComponentShown
-
-    private void searchTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchTxtActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//           String query = "SELECT * FROM itemreport WHERE ";
-//
-//        try (Connection conn = DataBase.getConnection(); 
-//            PreparedStatement pst = conn.prepareStatement(query)) {
-//            ResultSet rs = pst.executeQuery();
-//            
-//        } catch(Exception e){
-//            
-//        }
-        String searchText = searchTxt.getText().trim();
-
-        if (searchText.isEmpty()) {
-            sorter.setRowFilter(null);  // Show all rows
-        } else {
-            // Filter across all columns (case-insensitive)
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchText));
-        }
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        searchTxt.setText("");          // clear textfield
-        sorter.setRowFilter(null);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
-        user.Session.currentUsername = null;
-        user.Session.userId = null;
-        user.Session.userSchoolId = null;
-        JOptionPane.showMessageDialog(this, "Logout Successfully");
-        new userAuth.Login().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel8MouseClicked
-
-    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        new LostItems().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel18MouseClicked
-
-    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
-
-    }//GEN-LAST:event_jLabel21MouseClicked
-
-    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
-        new UserManagement().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel19MouseClicked
+    }//GEN-LAST:event_jLabel19MouseEntered
 
     public byte[] imageIconToBytes(ImageIcon icon) {
         if (icon instanceof ImageIcon) {
@@ -997,6 +933,9 @@ public final class AdminPage extends javax.swing.JFrame {
 
     }
 
+    /**
+     *
+     */
     public static void isLogin() {
         if (user.Session.currentUsername == null) {
             JOptionPane.showMessageDialog(null, "Please login first.");
@@ -1037,25 +976,25 @@ public final class AdminPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LostItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LostItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LostItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdminPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LostItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AdminPage().setVisible(true);
+                new LostItems().setVisible(true);
             }
         });
-        isLogin();
+        AdminPage ap = new AdminPage();
+        ap.isLogin();
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -1074,7 +1013,6 @@ public final class AdminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JOptionPane jOptionPane;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;

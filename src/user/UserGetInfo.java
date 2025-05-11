@@ -4,12 +4,17 @@
  */
 package user;
 
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
-
+import user.ItemInfo;
+import user.Session;
 
 /**
  *
@@ -33,6 +38,7 @@ public class UserGetInfo extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
         g4 = new javax.swing.JTextField();
         g3 = new javax.swing.JTextField();
         g2 = new javax.swing.JTextField();
@@ -41,9 +47,23 @@ public class UserGetInfo extends javax.swing.JPanel {
         g6 = new javax.swing.JTextField();
         g5 = new javax.swing.JTextField();
         g7 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        g8 = new javax.swing.JLabel();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setBackground(new java.awt.Color(255, 255, 255));
-        setMaximumSize(new java.awt.Dimension(1190, 69));
+        setMaximumSize(new java.awt.Dimension(1090, 69));
+        setPreferredSize(new java.awt.Dimension(1090, 70));
 
         g4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         g4.setBorder(null);
@@ -87,48 +107,70 @@ public class UserGetInfo extends javax.swing.JPanel {
         g7.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         g7.setForeground(new java.awt.Color(102, 102, 102));
         g7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        g7.setText(".");
+        g7.setText("/");
+
+        jButton1.setText("...");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        g8.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        g8.setForeground(new java.awt.Color(102, 102, 102));
+        g8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        g8.setText("/");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(g1, javax.swing.GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(g1, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(g2, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(g8, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(g2, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(g3, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(g4, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(g5, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(g6, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                .addGap(175, 175, 175)
-                .addComponent(accept2, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(g7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(14, 14, 14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(g7, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(g3, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(g4, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(g5, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(g6, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                        .addGap(63, 63, 63)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(accept2, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(g7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(g6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(g5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(g4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(g3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(g2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(g1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(accept2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(g7)
+                    .addComponent(g8))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(g6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(g5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(g4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(g3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(g2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(g1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(accept2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -136,9 +178,20 @@ public class UserGetInfo extends javax.swing.JPanel {
 
         String decision = "Claim Approved";
         try (Connection con = DBConnection.DataBase.getConnection()) {
-            String updateClaim = "UPDATE itemreport SET name=?, studentNum=?, yearSec=?, email=?, phone=?, status=? WHERE id=?";
-            PreparedStatement ps = con.prepareStatement(updateClaim);
+            String updateClaim = "";
+            String updateClaimsTable = "";
 
+            if (index == 0) {
+                // For lost items
+                updateClaim = "UPDATE itemreport SET name=?, studentNum=?, yearSec=?, email=?, phone=?, status=? WHERE id=?";
+                updateClaimsTable = "UPDATE claimsLost_tbl SET retrievalInfo=?, status_claim=?, timestamp=CURRENT_TIMESTAMP WHERE claimid = ?";
+            } else if (index == 1) {
+                // For found items
+                updateClaim = "UPDATE itemfound SET name=?, studentNum=?, yearSec=?, email=?, phone=?, status=? WHERE id=?";
+                updateClaimsTable = "UPDATE claims_tbl SET retrievalInfo=?, status_claim=?, timestamp=CURRENT_TIMESTAMP WHERE claimid = ?";
+            }
+
+            PreparedStatement ps = con.prepareStatement(updateClaim);
             ps.setString(1, g1.getText());
             ps.setString(2, g2.getText());
             ps.setString(3, g3.getText());
@@ -146,19 +199,18 @@ public class UserGetInfo extends javax.swing.JPanel {
             ps.setString(5, g5.getText());
             ps.setString(6, decision);
             ps.setInt(7, claimId1);
-
             int result = ps.executeUpdate();
 
-            String updates = "UPDATE claims_tbl SET retrievalInfo=?, status_claim=?, timestamp=CURRENT_TIMESTAMP WHERE claimid = ?";
-            PreparedStatement pst = con.prepareStatement(updates);
+            PreparedStatement pst = con.prepareStatement(updateClaimsTable);
             if (g6.getText().equals("(Optional)")) {
-                pst.setString(1, g6.getText());
-            } else {
                 pst.setString(1, null);
+            } else {
+                pst.setString(1, g6.getText());
             }
             pst.setString(2, decision);
             pst.setInt(3, claimId1);
             int results = pst.executeUpdate();
+
             if (results > 0 && result > 0) {
                 accept2.setText("Claim Approved");
                 accept2.setEnabled(false);
@@ -167,37 +219,79 @@ public class UserGetInfo extends javax.swing.JPanel {
                 repaint();
                 revalidate();
                 JOptionPane.showMessageDialog(this, "Confirmed");
-            }   
+            }
 
         } catch (Exception ex) {
-             ex.printStackTrace();
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_accept2ActionPerformed
 
     private void g4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_g4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_g4ActionPerformed
-    
-   
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        try (Connection con = DBConnection.DataBase.getConnection()) {
+            String query;
+            if (index == 0) {
+                // For itemreport (lost item)
+                query = "SELECT * FROM itemreport WHERE id = ?";
+            } else {
+                // For itemfound (found item)
+                query = "SELECT * FROM itemfound WHERE id = ?";
+            }
+
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, claimId1);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                byte[] imgBytes = rs.getBytes("imageAttach");
+                ImageIcon rawIcon = new ImageIcon(imgBytes);
+                String description = rs.getString("description");
+
+                // Create and show dialog
+                ItemInfo detail = new ItemInfo(rawIcon, description);
+                jDialog1.setContentPane(detail);
+                jDialog1.pack();
+
+                // center on screen
+                Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+                jDialog1.setLocation((screen.width - jDialog1.getWidth()) / 2,
+                        (screen.height - jDialog1.getHeight()) / 2);
+                jDialog1.setVisible(true);
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private int claimId1;
-    
+    private int index;
+
     public void getClaimInfo(String fullName, String studentNum,
-        String yearSec, String email, String phone, String timestamp, String inq, String status, int claimId1) {
+            String yearSec, String email, String phone, String timestamp, String inq, String status, int claimId1, int index) {
         this.claimId1 = claimId1;
+        this.index = index;
+                String a = index == 0? "Lost":"Found"; 
+
         g1.setText(fullName);
         g2.setText(studentNum);
         g3.setText(yearSec);
         g4.setText(email);
         g5.setText(phone);
         g7.setText(timestamp);
-
+        g8.setText(a);
         if (inq == null || inq.isEmpty()) {
             g6.setText("(Optional)");
         } else {
             g6.setText(inq);
         }
-        if (status.equalsIgnoreCase("Claim Approved")){
-             accept2.setText("Request Confirmed");
+        if (status.equalsIgnoreCase("Claim Approved")) {
+            accept2.setText("Request Confirmed");
             accept2.setEnabled(false);
             accept2.setBorderPainted(false);
             accept2.setContentAreaFilled(false);
@@ -213,5 +307,8 @@ public class UserGetInfo extends javax.swing.JPanel {
     private javax.swing.JTextField g5;
     private javax.swing.JTextField g6;
     private javax.swing.JLabel g7;
+    private javax.swing.JLabel g8;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JDialog jDialog1;
     // End of variables declaration//GEN-END:variables
 }

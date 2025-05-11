@@ -35,51 +35,103 @@ public class SignUp extends javax.swing.JFrame {
 
         jOptionPane1 = new javax.swing.JOptionPane();
         jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        studentNumTxt = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
         emailTxt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        firstNameTxt = new javax.swing.JTextField();
-        signupBtn = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        passwordTxt = new javax.swing.JTextField();
+        fullnameTxt = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        studentNumTxt = new javax.swing.JTextField();
         loginLink = new javax.swing.JLabel();
-        lastNameTxt = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        yearSecTxt = new javax.swing.JTextField();
+        signupBtn = new javax.swing.JButton();
+        fullnameTxt1 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        studentNumTxt1 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        passwordTxt = new javax.swing.JPasswordField();
+        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(520, 480));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(800, 500));
+        jPanel1.setLayout(null);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setPreferredSize(new java.awt.Dimension(800, 500));
+        jPanel5.setBackground(new java.awt.Color(0, 51, 153));
 
-        jLabel2.setText("Email");
+        jLabel15.setFont(new java.awt.Font("Segoe UI Black", 1, 48)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel15.setText("LOST AND FOUND SYSTEM");
+
+        jLabel16.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-logo.png"))); // NOI18N
+
+        jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-ssc-logo.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(70, 70, 70)
+                .addComponent(jLabel15)
+                .addContainerGap(69, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(330, 330, 330))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jPanel1.add(jPanel5);
+        jPanel5.setBounds(0, 20, 800, 120);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255, 200));
+
+        jLabel1.setText("First Name");
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel19.setText("CREATE YOUR ACCOUNT");
+
+        studentNumTxt.setBorder(null);
 
         jLabel4.setText("Student Number");
 
-        firstNameTxt.addActionListener(new java.awt.event.ActionListener() {
+        emailTxt.setBorder(null);
+        emailTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                firstNameTxtActionPerformed(evt);
+                emailTxtActionPerformed(evt);
             }
         });
 
-        signupBtn.setText("SIGN UP");
-        signupBtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        signupBtn.setContentAreaFilled(false);
-        signupBtn.addActionListener(new java.awt.event.ActionListener() {
+        jLabel2.setText("Email");
+
+        fullnameTxt.setBorder(null);
+        fullnameTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                signupBtnActionPerformed(evt);
+                fullnameTxtActionPerformed(evt);
             }
         });
-
-        jLabel1.setText("First Name");
 
         jLabel3.setText("Password");
 
@@ -91,88 +143,137 @@ public class SignUp extends javax.swing.JFrame {
             }
         });
 
-        lastNameTxt.addActionListener(new java.awt.event.ActionListener() {
+        signupBtn.setBackground(new java.awt.Color(0, 51, 153));
+        signupBtn.setForeground(new java.awt.Color(255, 255, 255));
+        signupBtn.setText("SIGN UP");
+        signupBtn.setBorderPainted(false);
+        signupBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        signupBtn.setFocusPainted(false);
+        signupBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastNameTxtActionPerformed(evt);
+                signupBtnActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Last Name");
+        fullnameTxt1.setBorder(null);
+        fullnameTxt1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fullnameTxt1ActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("Year and Section");
+        jLabel5.setText("Last Name");
+
+        studentNumTxt1.setBorder(null);
+
+        jLabel6.setText("Year & Section");
+
+        jCheckBox1.setBackground(new java.awt.Color(255, 255, 255));
+        jCheckBox1.setText("Show password");
+        jCheckBox1.setBorder(null);
+        jCheckBox1.setContentAreaFilled(false);
+        jCheckBox1.setFocusable(false);
+        jCheckBox1.setRequestFocusEnabled(false);
+        jCheckBox1.setRolloverEnabled(false);
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        passwordTxt.setBorder(null);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(emailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(firstNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(226, Short.MAX_VALUE)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(214, 214, 214))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(signupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(passwordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(yearSecTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(studentNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(loginLink, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(42, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jCheckBox1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(loginLink, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fullnameTxt1, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
+                            .addComponent(fullnameTxt))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(studentNumTxt1, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
+                            .addComponent(studentNumTxt)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(227, 227, 227))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(passwordTxt)
+                                .addGap(61, 61, 61)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(emailTxt)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(46, 46, 46))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(254, 254, 254)
+                .addComponent(signupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(studentNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fullnameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(4, 4, 4)
-                        .addComponent(firstNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addGap(4, 4, 4)
-                        .addComponent(lastNameTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
-                        .addGap(4, 4, 4)
-                        .addComponent(emailTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(4, 4, 4)
-                        .addComponent(studentNumTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addGap(4, 4, 4)
-                        .addComponent(yearSecTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(passwordTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
-                .addComponent(loginLink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fullnameTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(studentNumTxt1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(emailTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(passwordTxt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(loginLink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBox1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(signupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(171, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 812, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
-        );
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(70, 150, 670, 330);
+
+        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/qcu-bg.jpg"))); // NOI18N
+        jPanel1.add(jLabel18);
+        jLabel18.setBounds(0, 0, 800, 500);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -180,34 +281,38 @@ public class SignUp extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void firstNameTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstNameTxtActionPerformed
+    private void fullnameTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameTxtActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_firstNameTxtActionPerformed
+    }//GEN-LAST:event_fullnameTxtActionPerformed
+
+    private void loginLinkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginLinkMouseClicked
+        Login login = new Login();
+        login.setVisible(true);
+
+        this.dispose();
+    }//GEN-LAST:event_loginLinkMouseClicked
 
     private void signupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupBtnActionPerformed
         try (Connection con = DBConnection.DataBase.getConnection()) {
 
             StringBuilder errors = new StringBuilder();
 
-            if (firstNameTxt.getText().trim().isEmpty()) {
-                errors.append("- First Name is required\n");
+            if (fullnameTxt.getText().trim().isEmpty()) {
+                errors.append("- Full Name is required\n");
             }
-            if (lastNameTxt.getText().trim().isEmpty()) {
-                errors.append("- Last Name is required\n");
-            }
-            if (yearSecTxt.getText().trim().isEmpty()) {
-                errors.append("- Year & Section is required\n");
-            }
+
             if (emailTxt.getText().trim().isEmpty()) {
                 errors.append("- Email Address is required\n");
             } else if (!emailTxt.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                 errors.append("- Invalid Email Address\n");
             }
+
             if (passwordTxt.getText().trim().isEmpty()) {
                 errors.append("- Password is required\n");
             } else if (passwordTxt.getText().length() < 8) {
                 errors.append("- Password must contain at least 8 characters\n");
             }
+
             if (studentNumTxt.getText().trim().isEmpty()) {
                 errors.append("- Student Number is required\n");
             } else if (!studentNumTxt.getText().matches("^\\d{2}-\\d{4}$")) {
@@ -223,67 +328,58 @@ public class SignUp extends javax.swing.JFrame {
                     }
                 }
             }
+            char[] passwordChars = passwordTxt.getPassword();
+            String password = new String(passwordChars);
+
 
             if (errors.length() > 0) {
                 jOptionPane1.showMessageDialog(this, errors.toString(), "Validation Errors", jOptionPane1.ERROR_MESSAGE);
             } else {
-                String query = "INSERT INTO users_tbl (firstName, lastName, email, schoolID, yearSec, password, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                String query = "INSERT INTO users_tbl (fullName, email, schoolID, password) VALUES (?, ?, ?, ?)";
+                try (PreparedStatement pstmt = con.prepareStatement(query)) {
+                    pstmt.setString(1, fullnameTxt.getText());
+                    pstmt.setString(2, emailTxt.getText());
+                    pstmt.setString(3, studentNumTxt.getText());
+                    pstmt.setString(4, password);
+                    pstmt.executeUpdate();
 
-                try (PreparedStatement pstmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-                    pstmt.setString(1, firstNameTxt.getText());
-                    pstmt.setString(2, lastNameTxt.getText());
-                    pstmt.setString(3, emailTxt.getText());
-                    pstmt.setString(4, studentNumTxt.getText());
-                    pstmt.setString(5, yearSecTxt.getText());
-                    pstmt.setString(6, passwordTxt.getText());
-                    pstmt.setBoolean(7, true);
+                    // Set session
+                    user.Session.currentUsername = fullnameTxt.getText();
+                    user.Session.userSchoolId = studentNumTxt.getText();
 
-                    int affectedRows = pstmt.executeUpdate();
+                    // Clear fields
+                    fullnameTxt.setText("");
+                    emailTxt.setText("");
+                    studentNumTxt.setText("");
+                    passwordTxt.setText("");
 
-                    if (affectedRows > 0) {
-                        try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                            if (generatedKeys.next()) {
-                                user.Session.userId = generatedKeys.getInt(1);
-                            }
-                        }
-                        // Set other session info
-                        user.Session.currentUsername = firstNameTxt.getText() + " "+lastNameTxt.getText();
-                        user.Session.userSchoolId = studentNumTxt.getText();
+                    jOptionPane1.showMessageDialog(this, "Sign Up successful", "Success", jOptionPane1.INFORMATION_MESSAGE);
 
-                        // Clear fields
-                        firstNameTxt.setText("");
-                        lastNameTxt.setText("");
-                        emailTxt.setText("");
-                        studentNumTxt.setText("");
-                        yearSecTxt.setText("");
-                        passwordTxt.setText("");
-
-                        jOptionPane1.showMessageDialog(this, "Sign Up successful", "Success", jOptionPane1.INFORMATION_MESSAGE);
-
-                        this.dispose(); // Close current form
-                        new ItemDisplay().setVisible(true);
-                    } else {
-                        jOptionPane1.showMessageDialog(this, "Failed to sign up.", "Error", jOptionPane1.ERROR_MESSAGE);
-                    }
+                    this.dispose(); // Close current form
+                    new ItemDisplay().setVisible(true);
                 }
             }
 
         } catch (Exception e) {
             jOptionPane1.showMessageDialog(null, "Error: " + e.getMessage(), "Database error", jOptionPane1.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_signupBtnActionPerformed
 
-    private void loginLinkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginLinkMouseClicked
-        Login login = new Login();
-        login.setVisible(true);
-
-        this.dispose();
-    }//GEN-LAST:event_loginLinkMouseClicked
-
-    private void lastNameTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastNameTxtActionPerformed
+    private void fullnameTxt1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullnameTxt1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lastNameTxtActionPerformed
+    }//GEN-LAST:event_fullnameTxt1ActionPerformed
+
+    private void emailTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTxtActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        if (jCheckBox1.isSelected()) {
+            passwordTxt.setEchoChar((char) 0); // Show characters
+        } else {
+            passwordTxt.setEchoChar('•'); // Mask characters
+        }
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -323,8 +419,15 @@ public class SignUp extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField emailTxt;
-    private javax.swing.JTextField firstNameTxt;
+    private javax.swing.JTextField fullnameTxt;
+    private javax.swing.JTextField fullnameTxt1;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -333,11 +436,11 @@ public class SignUp extends javax.swing.JFrame {
     private javax.swing.JOptionPane jOptionPane1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField lastNameTxt;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel loginLink;
-    private javax.swing.JTextField passwordTxt;
+    private javax.swing.JPasswordField passwordTxt;
     private javax.swing.JButton signupBtn;
     private javax.swing.JTextField studentNumTxt;
-    private javax.swing.JTextField yearSecTxt;
+    private javax.swing.JTextField studentNumTxt1;
     // End of variables declaration//GEN-END:variables
 }
