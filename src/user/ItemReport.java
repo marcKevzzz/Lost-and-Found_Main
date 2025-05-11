@@ -106,8 +106,9 @@ public class ItemReport extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        jPanel9 = new javax.swing.JPanel();
         jLabel20 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jPanel33 = new javax.swing.JPanel();
         categoryCb1 = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
 
@@ -378,7 +379,7 @@ public class ItemReport extends javax.swing.JFrame {
                 jLabel21MouseClicked(evt);
             }
         });
-        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 150, 35));
+        jPanel6.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 120, 35));
 
         jLabel19.setBackground(new java.awt.Color(153, 153, 255));
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -394,21 +395,6 @@ public class ItemReport extends javax.swing.JFrame {
         });
         jPanel6.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 150, 30));
 
-        jPanel9.setBackground(new java.awt.Color(0, 51, 255));
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 34, Short.MAX_VALUE)
-        );
-
-        jPanel6.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 160, -1));
-
         jLabel20.setBackground(new java.awt.Color(153, 153, 255));
         jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(255, 255, 255));
@@ -421,7 +407,36 @@ public class ItemReport extends javax.swing.JFrame {
                 jLabel20MouseClicked(evt);
             }
         });
-        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 160, 34));
+        jPanel6.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 119, 34));
+
+        jLabel23.setBackground(new java.awt.Color(153, 153, 255));
+        jLabel23.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel23.setText("  Rules & Regulation");
+        jLabel23.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel23.setPreferredSize(new java.awt.Dimension(35, 20));
+        jLabel23.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel23MouseClicked(evt);
+            }
+        });
+        jPanel6.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 160, 34));
+
+        jPanel33.setBackground(new java.awt.Color(0, 51, 255));
+
+        javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
+        jPanel33.setLayout(jPanel33Layout);
+        jPanel33Layout.setHorizontalGroup(
+            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 160, Short.MAX_VALUE)
+        );
+        jPanel33Layout.setVerticalGroup(
+            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 34, Short.MAX_VALUE)
+        );
+
+        jPanel6.add(jPanel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 160, -1));
 
         categoryCb1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Status", "Item Lost", "Item Found", "", "" }));
         categoryCb1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -806,31 +821,6 @@ public class ItemReport extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_categoryCb1ActionPerformed
 
-    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        new ItemDisplay().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel18MouseClicked
-
-    private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
-        new PendingReportItem().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jLabel27MouseClicked
-
-    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        Profile windows = new Profile();
-        windows.setVisible(true);
-        dispose();
-    }//GEN-LAST:event_jLabel20MouseClicked
-
-    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
-        new ClaimItem().setVisible(true);
-        this.dispose();        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel21MouseClicked
-
-    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
-
-    }//GEN-LAST:event_jLabel19MouseClicked
-
     private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
 
     Profile windows = new Profile();
@@ -842,6 +832,36 @@ public class ItemReport extends javax.swing.JFrame {
                 componentShown();
 
     }//GEN-LAST:event_formComponentShown
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        new ItemDisplay().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jLabel27MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel27MouseClicked
+        new PendingReportItem().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel27MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+//        new ItemReport().setVisible(true);
+//        this.dispose();
+    }//GEN-LAST:event_jLabel19MouseClicked
+
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        Profile windows = new Profile();
+        windows.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_jLabel20MouseClicked
+
+    private void jLabel23MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel23MouseClicked
+              new TermsCondition().setVisible(true);
+              dispose();
+    }//GEN-LAST:event_jLabel23MouseClicked
 
     /**
      * @param args the command line arguments
@@ -904,6 +924,7 @@ public class ItemReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -915,10 +936,10 @@ public class ItemReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelShowFile;
     private javax.swing.JLabel labelShowImage;
